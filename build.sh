@@ -2,10 +2,14 @@
 
 EXITVAR=0
 
+cd repo/haxe
+REV=$(git svn find-rev git-svn)
+cd ../..
+
 for file in platforms/*; do
   if [ -d "${file}" ]; then
 		cd "${file}"
-		./build.sh $1 || EXITVAR=1
+		./build.sh $REV || EXITVAR=1
    fi
 done
 
