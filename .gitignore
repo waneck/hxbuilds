@@ -1,0 +1,10 @@
+bin
+
+builds
+tags
+repo/haxe
+repo/ocamllibs
+repo/.updated
+
+*.n
+*.swp
