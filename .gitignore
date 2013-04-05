@@ -5,7 +5,9 @@ build
 tags
 repo/haxe
 repo/ocamllibs
+repo/neko
 repo/.updated
+installed-platforms/*
 
 *.n
 *.swp
