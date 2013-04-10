@@ -1,18 +1,22 @@
 #!/bin/sh
 EXITVAR=0
 
+BASE=$PWD
 for proj in projects/*; do
+	cd $BASE
+	echo $proj
 	if [ -d "${proj}" ]; then
+		echo "Checking $(basename $proj)"
 		cd "${proj}"
 		./check.sh || EXITVAR=1
 
 		REV=$(./getver.sh)
-		BASE=$PWD
 		PROJECT=$(basename $proj)
 		PROJEXITVAR=0
 		for plat in installed-platforms/*; do
 			if [ -f repo/.updated ] && [ -d "${plat}" ]; then
-				cd "$BASE/$plat"
+				echo "Building $PROJECT for $(basename $plat)"
+				cd "$BASE/$proj/$plat"
 			
 				if [ ! -f "build/.r$REV" ] && [ ! -f "out/${PROJECT}_r$REV.tar.gz" ]; then
 					rm -rf build
@@ -27,7 +31,7 @@ for proj in projects/*; do
 
 				if [ -f out/${PROJECT}_r$REV.tar.gz ]; then
 					cd ../../../..
-					./sync.sh $BASE/${plat}/out/${PROJECT}_r$REV.tar.gz $(basename ${plat})/${PROJECT}_r$REV.tar.gz || EXITVAR=1
+					./sync.sh $BASE/$proj/${plat}/out/${PROJECT}_r$REV.tar.gz $(basename ${plat})/${PROJECT}_r$REV.tar.gz || EXITVAR=1
 				else
 					PROJEXITVAR=1
 				fi
