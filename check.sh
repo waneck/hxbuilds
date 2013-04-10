@@ -17,7 +17,7 @@ for proj in projects/*; do
 				if [ ! -f "build/.r$REV" ] && [ ! -f "out/${PROJECT}_r$REV.tar.gz" ]; then
 					rm -rf build
 					mkdir build
-					./build.sh $REV || PROJEXITVAR=1
+					./build.sh $REV && touch build/.r$REV || PROJEXITVAR=1
 				fi
 				if [ -f build/.r$REV ]; then
 					tar -zcvf out/haxe_r$REV.tar.gz build/*
