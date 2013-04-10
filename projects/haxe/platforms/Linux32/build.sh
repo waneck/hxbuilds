@@ -7,8 +7,7 @@ if [ $# -eq 0 ]; then
 	exit 1
 fi
 
-echo "build/haxe_r$1"
 cd ../../repo/haxe
 rm haxe
-make clean && make all && cp haxe $LNX/build/haxe_r$1 && cp -rf std $LNX/build/
-cd $LNX
+make clean && make all && cp haxe $LNX/build/haxe && cp -rf std $LNX/build/ && exit 0
+exit 1

@@ -20,14 +20,14 @@ for proj in projects/*; do
 					./build.sh $REV && touch build/.r$REV || PROJEXITVAR=1
 				fi
 				if [ -f build/.r$REV ]; then
-					tar -zcvf out/haxe_r$REV.tar.gz build/*
+					tar -zcvf out/${PROJECT}_r$REV.tar.gz build/*
 				else
 					PROJEXITVAR=1
 				fi
 
-				if [ -f out/haxe_r$REV.tar.gz ]; then
+				if [ -f out/${PROJECT}_r$REV.tar.gz ]; then
 					cd ../../../..
-					./sync.sh $BASE/${plat}/out/haxe_r$REV.tar.gz $(basename ${plat})/haxe_r$REV.tar.gz || EXITVAR=1
+					./sync.sh $BASE/${plat}/out/${PROJECT}_r$REV.tar.gz $(basename ${plat})/${PROJECT}_r$REV.tar.gz || EXITVAR=1
 				else
 					PROJEXITVAR=1
 				fi
