@@ -32,6 +32,7 @@ for proj in projects/*; do
 				if [ -f out/${PROJECT}_r$REV.tar.gz ]; then
 					cd ../../../..
 					./sync.sh $BASE/$proj/${plat}/out/${PROJECT}_r$REV.tar.gz $(basename $proj)/$(basename ${plat})/${PROJECT}_r$REV.tar.gz || EXITVAR=1
+					./sync.sh $BASE/$proj/${plat}/out/${PROJECT}_r$REV.tar.gz $(basename $proj)/$(basename ${plat})/${PROJECT}_latest.tar.gz || EXITVAR=1
 				else
 					PROJEXITVAR=1
 				fi
