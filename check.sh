@@ -1,28 +1,49 @@
 #!/bin/sh
-cd repo
-cd ocamllibs
-OLDREV=$(git svn find-rev git-svn)
-git svn fetch
-REV=$(git svn find-rev git-svn)
-if [ ! $OLDREV = $REV ]; then
-	touch ../.updated
-fi
+EXITVAR=0
 
-cd ../haxe
-OLDREV=$(git svn find-rev git-svn)
-git svn fetch
-REV=$(git svn find-rev git-svn)
-if [ ! $OLDREV = $REV ]; then
-	touch ../.updated
-fi
+for proj in projects/*; do
+	if [ -d "${proj}" ]; then
+		cd "${proj}"
+		./check.sh || EXITVAR=1
 
-cd ../neko
-git svn fetch
+		REV=$(./getver.sh)
+		BASE=$PWD
+		PROJECT=$(basename $proj)
+		PROJEXITVAR=0
+		for plat in installed-platforms/*; do
+			if [ -f repo/.updated ] && [ -d "${plat}" ]; then
+				cd "$BASE/$plat"
+			
+				if [ ! -f "build/.r$REV" ] && [ ! -f "out/${PROJECT}_r$REV.tar.gz" ]; then
+					rm -rf build
+					mkdir build
+					./build.sh $REV || PROJEXITVAR=1
+				fi
+				if [ -f build/.r$REV ]; then
+					tar -zcvf out/haxe_r$REV.tar.gz build/*
+				else
+					PROJEXITVAR=1
+				fi
 
-cd ../../
+				if [ -f out/haxe_r$REV.tar.gz ]; then
+					cd ../../../..
+					./sync.sh $BASE/${plat}/out/haxe_r$REV.tar.gz $(basename ${plat})/haxe_r$REV.tar.gz || EXITVAR=1
+				else
+					PROJEXITVAR=1
+				fi
+			fi
+			cd $BASE
+		done
 
-if [ -f repo/.updated ];
-then
-	echo "Update exists on $REV!"
-	./build.sh $REV && rm repo/.updated
-fi
+		if [ $PROJEXITVAR -eq 0 ]; then
+			if [ -f repo/.updated ]; then
+				echo "removing updated"
+				rm repo/.updated
+			fi
+		else
+			EXITVAR=1
+		fi
+	fi
+done
+
+exit $EXITVAR

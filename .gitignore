@@ -3,11 +3,8 @@ bin
 out
 build
 tags
-repo/haxe
-repo/ocamllibs
-repo/neko
-repo/.updated
-installed-platforms/*
+repo
+installed-platforms
 
 *.n
 *.swp
