@@ -36,10 +36,10 @@ for proj in projects/*; do
 					PROJEXITVAR=1
 				fi
 			fi
-			cd $BASE
+			cd $BASE/$proj
 		done
 
-		if [ $PROJEXITVAR -eq 0 ]; then
+		if [ $PROJEXITVAR = 0 ]; then
 			if [ -f repo/.updated ]; then
 				echo "removing updated"
 				rm repo/.updated

@@ -9,5 +9,5 @@ fi
 
 cd ../../repo/neko
 rm -rf bin
-make clean && make all && cp -rf bin $LNX/build/ && && exit 0
+make clean && make all && cp -rf bin $LNX/build/ && exit 0
 exit 1
