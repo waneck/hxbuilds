@@ -1,10 +1,12 @@
 bin
+tags
 
 out
 build
 tags
 repo
 installed-platforms
+installed-tests
 
 *.n
 *.swp

@@ -1,0 +1,9 @@
+-cp .
+-D spod_macro
+-main Runner
+-neko bin/runner.n
+--next
+-cp .
+-D spod_macro
+-main Index
+-neko bin/index.n
