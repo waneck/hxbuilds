@@ -7,7 +7,8 @@ class Index
 
 	static function main()
 	{
-		trace("hello world");
+
+		Sys.println(new view.TestView().setData({ projects:[] }).execute());
 	}
 
 }

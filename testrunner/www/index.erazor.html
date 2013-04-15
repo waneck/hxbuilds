@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+		<title>index - Haxe</title>
+		<link rel="stylesheet" type="text/css" href="/css/tests.css"/>
+		<link rel="stylesheet" type="text/css" href="/css/haxe2.css"/>
+		<link rel="stylesheet" type="text/css" href="/css/haxe2_gsearch.css"/>
+		<link rel="icon" href="/img/haxe2/favicon.ico" type="image/x-icon"/>
+		<link href="http://fonts.googleapis.com/css?family=Montserrat|PT+Serif+Caption:400,400italic" rel="stylesheet" type="text/css"/>
+	</head>
+	<body class="user_offline">
+		<div class="gradient">
+			<div id="site">
+			<div id="head">
+				<a href="/" class="logo">
+					<img src="/img/haxe2/logo.png" alt="HaXe logo"/>
+					<h1>One language, everywhere.</h1>
+				</a>
+				<!--<ul id="mainmenu">
+	<li class="active"><a href="/">Home</a></li><li><a href="/download">Download</a></li><li><a href="/doc">Documentation</a></li><li><a href="/com">Community</a></li><li><a href="/forum">Forum</a></li><li><a href="http://haxe.org/forum/thread/4054">IRC</a></li><li><a href="/api">API</a></li>
+				</ul>-->
+			</div>
+			<div id="content">
+				@for (project in projects)
+				{
+				<h1 class="title"><a href="">@project.title</a></h1>
+				<div class="tests">
+					@for (test in project.tests)
+					{
+						<h2><a href="">@test.title</a></h2>
+						<table class="testresults">
+						@for (target in test.targets)
+						{
+							<tr>
+								<th>@target.name</th>
+								@for (res in target.results)
+								{
+									<th class="@res"></th>
+								}
+							</tr>
+						}
+						</table>
+					}
+				</div>
+				}
+			</div>
+		</div>
+	</body>
+</html>
+

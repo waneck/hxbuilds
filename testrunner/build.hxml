@@ -6,4 +6,5 @@
 -cp .
 -D spod_macro
 -main Index
--neko bin/index.n
+-neko www/index.n
+-lib erazor #use haxelib git git://github.com/waneck/erazor.git src

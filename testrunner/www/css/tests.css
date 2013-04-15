@@ -1,0 +1,24 @@
+.gtest {
+    width: 6px;
+    background-color: #00CC99;
+}
+.ytest {
+    width: 6px;
+    background-color: #A31919;
+}
+.rtest {
+    width: 6px;
+    background-color: #A31919;
+}
+.tests h2 {
+    display: inline-block;
+    color: #686868; margin-top: 15px; margin-left: 16px; margin-right: 4px;
+    font-size: 13.5pt;
+}
+.tests {
+    margin-bottom: 32px
+}
+.testresults {
+    display: inline-table;
+    font-size: 8pt;
+}
