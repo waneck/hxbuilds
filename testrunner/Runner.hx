@@ -1,4 +1,5 @@
 import sys.db.Manager;
+import db.TestPart;
 import sys.db.TableCreate;
 import sys.FileSystem;
 import haxe.io.Path;
@@ -16,7 +17,7 @@ class Runner
 	static var cmds:Map<String, {description:String, args:String, func:Array<String>->Void}> = [
 		"run" => {
 			description: "runs an executable as part of a unit test",
-			args:"<project> <rev> <test> <target> <executable> [arg1,arg2,...argN]",
+			args:"<project> <rev> <test[_testpart]> <target> <executable> [arg1,arg2,...argN]",
 			func:function(args:Array<String>)
 			{
 				if (args.length < 5)
@@ -30,7 +31,7 @@ class Runner
 			}
 		},
 		"run-project" => {
-			description: "runs all unit tests that follow the structure <project>/installed-tests/<test>/targets/<target>/exec",
+			description: "runs all unit tests that follow the structure <project>/installed-tests/<test[_testpart]>/targets/<target>/exec",
 			args:"<project-home> <project> <rev>",
 			func:function(args:Array<String>)
 			{
@@ -52,9 +53,11 @@ class Runner
 				Manager.cnx.request('CREATE UNIQUE INDEX project_rev ON Revision (project,revision)');
 				Manager.cnx.request('CREATE INDEX rdate_project ON Revision (firstRun,project)');
 				TableCreate.create(TestResult.manager);
-				Manager.cnx.request('CREATE UNIQUE INDEX rev_test_target ON TestResult (revision_id,test_id,target)');
+				Manager.cnx.request('CREATE UNIQUE INDEX rev_test_target ON TestResult (revision_id,testPart_id,target)');
 				TableCreate.create(Test.manager);
 				Manager.cnx.request('CREATE UNIQUE INDEX project_name ON Test (project,name)');
+				TableCreate.create(TestPart.manager);
+				Manager.cnx.request('CREATE UNIQUE INDEX test_name ON TestPart (test_id,name)');
 				TableCreate.create(TestContact.manager);
 			}
 		},
@@ -168,15 +171,29 @@ class Runner
 
 	static function run(project:String,rev:String,test:String,target:String,cmd:String,args:Array<String>):Void
 	{
+		var tps = test.split("_");
+		var testpart = (tps.length > 1 ? tps[1] : "default");
+		test = tps[0];
+
 		var t:Test = Test.manager.select($project == project && $name == test,null,false);
 		if (t == null)
 		{
 			t = new Test();
 			t.project = project;
 			t.name = test;
-			t.category = "defaullt";
+			t.title = test;
 			t.inUse = true;
 			t.insert();
+		}
+
+		var tp:TestPart = TestPart.manager.select($test == t && $name == testpart, null, false);
+		if (tp == null)
+		{
+			tp = new TestPart();
+			tp.name = testpart;
+			tp.test = t;
+			tp.title = testpart;
+			tp.insert();
 		}
 
 		var r:Revision = Revision.manager.select($project == project && $revision == rev,null,false);
@@ -196,7 +213,7 @@ class Runner
 
 		if (exit != 0)
 		{
-			var lastr = TestResult.manager.select($test == t, {orderBy:[-dateRan], limit:1}, false);
+			var lastr = TestResult.manager.select($testPart == tp, {orderBy:[-dateRan], limit:1}, false);
 			if (lastr == null || lastr.success) //don't flood
 			{
 				for (contact in TestContact.manager.search( ($project == t.project) && ($testName == null || $testName == t.name) ))
@@ -217,7 +234,7 @@ class Runner
 		result.stderr = err;
 		result.stdout = out;
 		result.revision = r;
-		result.test = t;
+		result.testPart = tp;
 		result.insert();
 	}
 
