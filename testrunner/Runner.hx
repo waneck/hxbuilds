@@ -49,11 +49,85 @@ class Runner
 			func:function(args:Array<String>)
 			{
 				TableCreate.create(Revision.manager);
+				Manager.cnx.request('CREATE UNIQUE INDEX project_rev ON Revision (project,revision)');
+				Manager.cnx.request('CREATE INDEX rdate_project ON Revision (firstRun,project)');
 				TableCreate.create(TestResult.manager);
+				Manager.cnx.request('CREATE UNIQUE INDEX rev_test_target ON TestResult (revision_id,test_id,target)');
 				TableCreate.create(Test.manager);
+				Manager.cnx.request('CREATE UNIQUE INDEX project_name ON Test (project,name)');
 				TableCreate.create(TestContact.manager);
 			}
-		}
+		},
+		"addrev" => {
+			description: "creates or modifies a revision",
+			args:"<project> <revision> [author] [message] [date]",
+			func:function(args:Array<String>)
+			{
+				if (args.length < 3)
+				{
+					usage();
+					Sys.exit(1);
+				}
+				var project = args[0], revision = args[1], author = args[2], message = args[3], date = args[4];
+				var rev:Revision = Revision.manager.select($project == project && $revision == revision,null,true);
+				if (rev == null)
+				{
+					rev = new Revision();
+					rev.project = project;
+					rev.revision = revision;
+					rev.firstRun = Date.now();
+					rev.insert();
+				}
+
+				if (author != null)
+				{
+					rev.author = author;
+				}
+
+				if (message != null)
+				{
+					rev.log = message;
+				}
+
+				if (date != null)
+				{
+					rev.date = Date.fromString(date);
+				}
+				rev.update();
+			}
+		},
+		"addcontact" => {
+			description: "Adds a contact",
+			args:"<project> <name> <email> [test-name]",
+			func:function(args:Array<String>)
+			{
+				if (args.length < 3)
+				{
+					usage(); Sys.exit(1);
+				}
+
+				var project = args[0], name = args[1], email = args[2], tname = args[3];
+				var c = new TestContact();
+				c.project = project;
+				c.name = name;
+				c.email = email;
+				c.testName = name;
+				c.insert();
+			}
+		},
+		"rmcontact" => {
+			description: "Removes a contact by email",
+			args:"<email>",
+			func:function(args:Array<String>)
+			{
+				if (args.length != 1)
+				{
+					usage(); Sys.exit(1);
+				}
+
+				Manager.cnx.request("DELETE FROM TestContact WHERE email = " + Manager.quoteAny(args[0]));
+			}
+		},
 	];
 
 	static function usage()
@@ -78,6 +152,7 @@ class Runner
 		for (test in FileSystem.readDirectory(projectLocation + "/installed-tests"))
 		{
 			var path = projectLocation + "/installed-tests/" + test;
+			var t:Test = Test.manager.select($project == project && $name == test, null, true);
 			if (!FileSystem.exists(path + "/targets"))
 			{
 				Sys.println("$test: no target to run");
@@ -99,6 +174,7 @@ class Runner
 			t = new Test();
 			t.project = project;
 			t.name = test;
+			t.category = "defaullt";
 			t.inUse = true;
 			t.insert();
 		}
@@ -118,6 +194,21 @@ class Runner
 		var err = process.stderr.readAll().toString();
 		var exit = process.exitCode();
 
+		if (exit != 0)
+		{
+			var lastr = TestResult.manager.select($test == t, {orderBy:[-dateRan], limit:1}, false);
+			if (lastr == null || lastr.success) //don't flood
+			{
+				for (contact in TestContact.manager.search( ($project == t.project) && ($testName == null || $testName == t.name) ))
+				{
+					var pr = new Process("mail", ["-s", '[test-runner] "$project $test" failed @ $rev [$target]', contact.email]);
+					var name = contact.name;
+					pr.stdin.writeString('$name,\nThe Test "$project $test" has failed with exit code $exit while running for revision $rev ($target)\n\tstdout:\n$out\n\tsterr:\n$err');
+					pr.exitCode();
+				}
+			}
+		}
+
 		var result:TestResult = new TestResult();
 		result.dateRan = Date.now();
 		result.exitCode = exit;
@@ -128,17 +219,6 @@ class Runner
 		result.revision = r;
 		result.test = t;
 		result.insert();
-
-		if (!result.success)
-		{
-			for (contact in TestContact.manager.search($test == t))
-			{
-				var pr = new Process("mail", ["-s", '[test-runner] "$project $test" failed @ $rev [$target]', contact.email]);
-				var name = contact.name;
-				pr.stdin.writeString('$name,\nThe Test "$project $test" has failed with exit code $exit while running for revision $rev ($target)\n\tstdout:\n$out\n\tsterr:\n$err');
-				pr.exitCode();
-			}
-		}
 	}
 
 	static function main()

@@ -1,12 +1,32 @@
 import sys.db.Manager;
+import sys.FileSystem;
 import sys.db.Mysql;
+import sys.db.Sqlite;
 import sys.io.File;
 class Env
 {
+	private static var data:Dynamic;
+
 	public static function init()
 	{
-		var sqlData = haxe.Json.parse( File.getContent( Sys.getEnv("HOME") + "/.testrunnerData") );
+		var file = Sys.getEnv("HOME") + "/.hxtests.json";
+		if (!FileSystem.exists(file))
+		{
+			file = "/etc/hxtests/hxtests.json";
+		}
 
-		Manager.cnx = Mysql.connect(sqlData);
+		if (!FileSystem.exists(file))
+		{
+			Sys.stderr().writeString("Error! Configuration file not found. Run `hxtests config` first\n");
+			Sys.exit(2);
+		}
+
+		data = haxe.Json.parse( File.getContent(file) );
+		if (data.mysql != null)
+		{
+			Manager.cnx = Mysql.connect(data.mysql);
+		} else {
+			Manager.cnx = Sqlite.open(data.sqlite);
+		}
 	}
 }
