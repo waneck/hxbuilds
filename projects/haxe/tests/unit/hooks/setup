@@ -10,12 +10,28 @@ haxelib dev hxjava $PWD/repo/hxjava
 haxelib dev hxcs $PWD/repo/hxcs
 
 cd repo
-#apt-get
-sudo apt-get install openjdk-7-jre openjdk-7-jdk
+#apt-get 
+sudo apt-get install openjdk-7-jre openjdk-7-jdk xvfb
 
 #mxmlc
 mkdir mxmlc; cd mxmlc
-wget http://download.macromedia.com/pub/flex/sdk/flex_sdk_4.6.zip
-unzip flex_sdk_4.6.zip
-rm flex_sdk_4.6.zip
+wget http://download.macromedia.com/pub/flex/sdk/flex_sdk_4.1.zip
+unzip flex_sdk_4.1.zip
+rm flex_sdk_4.1.zip
+wget http://airdownload.adobe.com/air/lin/download/2.6/AdobeAIRSDK.tbz2
+mkdir temp
+tar -jxvf AdobeAIRSDK.tbz2 -C temp
+cp temp/bin/adl bin/
+cp -rf temp/runtimes/air/linux runtimes/air/linux
+cd ..
+
+
+
+# mkdir redtamarin; cd redtamarin
+# wget https://redtamarin.googlecode.com/files/redtamarin_0.3.2.1170_NIX.zip
+# unzip redtamarin_0.3.2.1170_NIX.zip
+# chmod 777 redshell
+# chmod 777 redshell_d
+# wget https://maashaack.googlecode.com/files/avmglue_0.1.0.2305.zip
+# unzip avmglue_0.1.0.2305.zip
 
