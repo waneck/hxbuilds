@@ -58,7 +58,8 @@ class Index
 			var targetPos = parts.indexOf(r.part_name);
 			if (targetPos < 0)
 				targetPos = parts.push(r.part_name) - 1;
-			cur.targets[cur.targets.length - 1].results[targetPos] = (r.success ? "gtest" : "rtest");
+			var suc = untyped r.success || r.success == 1; //sqlite vs mysql
+			cur.targets[cur.targets.length - 1].results[targetPos] = (suc ? "gtest" : "rtest");
 		}
 		return ret;
 	}
