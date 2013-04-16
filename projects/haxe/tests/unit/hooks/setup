@@ -11,7 +11,7 @@ haxelib dev hxcs $PWD/repo/hxcs
 
 cd repo
 #apt-get 
-sudo apt-get install openjdk-7-jre openjdk-7-jdk xvfb
+sudo apt-get install openjdk-7-jre openjdk-7-jdk xvfb g++
 
 #mxmlc
 mkdir mxmlc; cd mxmlc
