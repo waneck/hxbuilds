@@ -1,0 +1,2 @@
+BASE=$PWD
+haxe --cwd $PWD/../../template --run HaxeUnitConverter $BASE/bin/Test-debug 

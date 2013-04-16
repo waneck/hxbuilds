@@ -16,4 +16,5 @@ class TestResult extends Object
 	public var exitCode:SInt;
 	public var stdout:Null<SText>;
 	public var stderr:Null<SText>;
+	public var executionTime:SFloat;
 }

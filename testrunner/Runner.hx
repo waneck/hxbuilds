@@ -31,7 +31,7 @@ class Runner
 			}
 		},
 		"run-project" => {
-			description: "runs all unit tests that follow the structure <project>/installed-tests/<test[_testpart]>/targets/<target>/exec",
+			description: "runs all unit tests that follow the structure <project>/installed-tests/<test[_testpart]>/targets/<target>/exec[_testpart]",
 			args:"<project-home> <project> <rev>",
 			func:function(args:Array<String>)
 			{
@@ -155,15 +155,41 @@ class Runner
 		for (test in FileSystem.readDirectory(projectLocation + "/installed-tests"))
 		{
 			var path = projectLocation + "/installed-tests/" + test;
-			var t:Test = Test.manager.select($project == project && $name == test, null, true);
 			if (!FileSystem.exists(path + "/targets"))
 			{
 				Sys.println("$test: no target to run");
 			} else {
+				//first run init hook on /hooks folder
+				if (FileSystem.exists(path + "/hooks/init"))
+				{
+					var cur = Sys.getCwd(); cur = cur.substr(0,cur.length-1);
+					Sys.setCwd(path);
+					Sys.command("hooks/init", [rev,project]);
+					Sys.setCwd(cur);
+				}
+
 				for(target in FileSystem.readDirectory(path + "/targets"))
 				{
 					var path = path + "/targets/" + target;
-					run(project, rev, test, target, path + "/exec", []);
+					if (StringTools.startsWith(target, ".") || !FileSystem.isDirectory(path))
+							continue;
+					var cur = Sys.getCwd(); cur = cur.substr(0,cur.length-1);
+					Sys.setCwd(path);
+					for (f in FileSystem.readDirectory(path))
+					{
+						if (StringTools.startsWith(f, "exec"))
+						{
+							var ex = f.split("_");
+							if (ex.length > 1)
+							{
+								var test = test.split("_")[0] + "_" + ex[1];
+								run(project,rev,test,target,f,[]);
+							} else {
+								run(project,rev,test,target,f,[]);
+							}
+						}
+					}
+					Sys.setCwd(cur);
 				}
 			}
 		}
@@ -206,15 +232,17 @@ class Runner
 			r.insert();
 		}
 
+		var ctime = haxe.Timer.stamp();
 		var process = new Process(cmd, args);
 		var out = process.stdout.readAll().toString();
 		var err = process.stderr.readAll().toString();
 		var exit = process.exitCode();
+		var ftime = haxe.Timer.stamp();
 
 		if (exit != 0)
 		{
 			var lastr = TestResult.manager.select($testPart == tp, {orderBy:[-dateRan], limit:1}, false);
-			if (lastr == null || lastr.success) //don't flood
+			if (lastr == null || lastr.success || lastr.stdout != out || lastr.stderr != err) //don't flood
 			{
 				for (contact in TestContact.manager.search( ($project == t.project) && ($testName == null || $testName == t.name) ))
 				{
@@ -235,6 +263,7 @@ class Runner
 		result.stdout = out;
 		result.revision = r;
 		result.testPart = tp;
+		result.executionTime = ftime - ctime;
 		result.insert();
 	}
 
