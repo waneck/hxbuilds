@@ -1,10 +1,21 @@
 #!/bin/sh
 rm -Rf repo
 mkdir repo
-ln -s ../../repo/haxe/tests repo/tests
+ln -s ../../../repo/haxe/tests repo/tests
 svn co http://hxcpp.googlecode.com/svn/trunk/ repo/hxcpp
 git clone git://github.com/waneck/hxjava.git repo/hxjava
 git clone git://github.com/waneck/hxcs.git repo/hxcs
 haxelib dev hxcpp $PWD/repo/hxcpp
 haxelib dev hxjava $PWD/repo/hxjava
 haxelib dev hxcs $PWD/repo/hxcs
+
+cd repo
+#apt-get
+sudo apt-get install openjdk-7-jre openjdk-7-jdk
+
+#mxmlc
+mkdir mxmlc; cd mxmlc
+wget http://download.macromedia.com/pub/flex/sdk/flex_sdk_4.6.zip
+unzip flex_sdk_4.6.zip
+rm flex_sdk_4.6.zip
+
