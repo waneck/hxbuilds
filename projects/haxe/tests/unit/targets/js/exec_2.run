@@ -1,2 +1,3 @@
 #!/bin/sh
-neko ../../template/huc.n phantomjs bin
+#neko ../../template/huc.n phantomjs bin
+mono ../../template/huc/bin/huc.exe phantomjs bin
