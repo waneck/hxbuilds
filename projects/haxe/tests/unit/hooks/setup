@@ -1,0 +1,10 @@
+#!/bin/sh
+rm -Rf repo
+mkdir repo
+ln -s ../../repo/haxe/tests repo/tests
+svn co http://hxcpp.googlecode.com/svn/trunk/ repo/hxcpp
+git clone git://github.com/waneck/hxjava.git repo/hxjava
+git clone git://github.com/waneck/hxcs.git repo/hxcs
+haxelib dev hxcpp $PWD/repo/hxcpp
+haxelib dev hxjava $PWD/repo/hxjava
+haxelib dev hxcs $PWD/repo/hxcs

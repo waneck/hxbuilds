@@ -1,3 +1,7 @@
 #!/bin/sh
-rm -Rf src
-ln -s ../../repo/haxe/tests repo
+cd repo/hxcpp
+svn up
+cd ../hxjava
+git pull
+cd ../hxcs
+git pull
