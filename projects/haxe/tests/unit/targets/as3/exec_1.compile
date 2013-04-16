@@ -1,5 +1,5 @@
 #!/bin/sh
-rm -rf bin
+rm -rf bin*
 BASE=$PWD
 TARGET=$(basename $BASE)
 
