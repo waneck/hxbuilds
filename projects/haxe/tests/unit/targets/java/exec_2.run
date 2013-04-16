@@ -1,0 +1,3 @@
+#!/bin/sh
+BASE=$PWD
+haxe --cwd $PWD/../../template --run HaxeUnitConverter java -jar $BASE/bin/bin.jar

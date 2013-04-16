@@ -1,0 +1,3 @@
+#!/bin/sh
+BASE=$PWD
+haxe --cwd $PWD/../../template --run HaxeUnitConverter mono --debug $BASE/bin/bin/bin.exe
