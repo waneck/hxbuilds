@@ -1,2 +1,3 @@
 #!/bin/sh
-neko ../../template/huc.n xvfb-run ../../repo/mxmlc/bin/adl app.xml
+#neko ../../template/huc.n xvfb-run ../../repo/mxmlc/bin/adl app.xml
+mono ../../template/huc/bin/huc.exe xvfb-run ../../repo/mxmlc/bin/adl app.xml

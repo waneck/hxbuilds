@@ -40,7 +40,7 @@ class HaxeUnitConverter {
 		}
 		catch(e:haxe.io.Eof) {}
 
-		err.add(process.stderr.readAll());
+		err.add(try process.stderr.readAll() catch(e:Dynamic) haxe.io.Bytes.alloc(0));
 		var err = err.toString();
 		var exit = try process.exitCode() catch(e:Dynamic) 1;
 		if (isDone) exit = 0;
