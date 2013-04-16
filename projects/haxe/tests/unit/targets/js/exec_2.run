@@ -1,3 +1,2 @@
 #!/bin/sh
-BASE=$PWD
-haxe --cwd $PWD/../../template --run HaxeUnitConverter phantomjs $BASE/bin
+neko ../../template/huc.n phantomjs bin
