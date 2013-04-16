@@ -1,2 +1,2 @@
 #!/bin/sh
-xvfb-run ../../repo/mxmlc/bin/adl app.xml
+neko ../../template/huc.n xvfb-run ../../repo/mxmlc/bin/adl app.xml

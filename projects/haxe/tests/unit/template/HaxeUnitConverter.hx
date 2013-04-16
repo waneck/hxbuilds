@@ -39,6 +39,7 @@ class HaxeUnitConverter {
 			}
 		}
 		catch(e:haxe.io.Eof) {}
+
 		err.add(process.stderr.readAll());
 		var err = err.toString();
 		var exit = try process.exitCode() catch(e:Dynamic) 1;

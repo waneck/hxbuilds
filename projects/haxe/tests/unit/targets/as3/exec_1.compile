@@ -4,6 +4,6 @@ BASE=$PWD
 TARGET=$(basename $BASE)
 
 cd ../../repo/tests/unit
-haxe -cp ../ -debug -resource res1.txt -resource res2.bin --no-opt -dce full -main unit.Test -${TARGET} "${BASE}/bin" -D ci-server
+haxe -cp ../ -debug -resource res1.txt -resource res2.bin --no-opt -dce full -main unit.Test -${TARGET} "${BASE}/bin" -D ci-server -D fdb
 cd $BASE
 ../../repo/mxmlc/bin/amxmlc -static-link-runtime-shared-libraries=true -debug bin/__main__.as --output bin.swf
