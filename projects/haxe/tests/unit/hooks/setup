@@ -11,7 +11,7 @@ haxelib dev hxcs $PWD/repo/hxcs
 
 cd repo
 #apt-get 
-sudo apt-get install openjdk-7-jre openjdk-7-jdk xvfb g++ mono-mcs php5-cli
+sudo apt-get install openjdk-7-jre openjdk-7-jdk xvfb g++ mono-mcs php5-cli phantomjs
 
 #mxmlc
 mkdir mxmlc; cd mxmlc

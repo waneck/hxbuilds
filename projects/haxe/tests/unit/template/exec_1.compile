@@ -3,5 +3,5 @@ rm -rf bin
 BASE=$PWD
 TARGET=$(basename $BASE)
 
-cd ../../repo/unit
+cd ../../repo/tests/unit
 haxe -cp ../ -debug -resource res1.txt -resource res2.bin --no-opt -dce full -main unit.Test -${TARGET} "${BASE}/bin"
