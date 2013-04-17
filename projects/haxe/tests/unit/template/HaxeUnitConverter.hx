@@ -6,7 +6,7 @@ class HaxeUnitConverter {
 
 	}
 
-	static inline var TIMEOUT_MS = 500;
+	static inline var TIMEOUT_MS = 10000;
 
 	static function main()
 	{
@@ -16,6 +16,7 @@ class HaxeUnitConverter {
 		var out = new StringBuf(), err = new StringBuf();
 		var stdout = process.stdout, iserr = false;
 		var isDone = false;
+
 		try
 		{
 			while(true)
@@ -30,6 +31,7 @@ class HaxeUnitConverter {
 				} else {
 					if (ln.endsWith("START"))
 					{
+						err = new StringBuf();
 						iserr = false;
 					}
 
@@ -38,20 +40,20 @@ class HaxeUnitConverter {
 				}
 				if (isDone)
 				{
-					process.kill();
+					try { process.kill(); } catch(e:Dynamic) {}
 					break;
 				}
 			}
 		}
 		catch(e:haxe.io.Eof) {}
 
-		err.add(try process.stderr.readAll().toString() catch(e:Dynamic) "");
+		// err.add(try process.stderr.readAll().toString() catch(e:Dynamic) "");
 		var stderr = err.toString();
 		var exit = try process.exitCode() catch(e:Dynamic) 1;
 		if (isDone) exit = 0;
 
 		Sys.stdout().writeString(out.toString());
-		Sys.stderr().writeString(stderr);
+		Sys.stderr().writeString(stderr + (try process.stderr.readAll().toString() catch(e:Dynamic) ""));
 		if (exit != 0 || iserr || stderr.length > 0)
 		{
 			Sys.exit(1);
