@@ -33,7 +33,8 @@ for proj in projects/*; do
 					cd ../../../..
 					./sync.sh $BASE/$proj/${plat}/out/${PROJECT}_r$REV.tar.gz $(basename $proj)/$(basename ${plat})/${PROJECT}_r$REV.tar.gz || EXITVAR=1
 					./sync.sh $BASE/$proj/${plat}/out/${PROJECT}_r$REV.tar.gz $(basename $proj)/$(basename ${plat})/${PROJECT}_latest.tar.gz || EXITVAR=1
-					neko $BASE/testrunner/bin/runner.n run-project $PROJECT $BASE/$proj $REV
+					echo "neko $BASE/testrunner/bin/runner.n run-project $BASE/$proj $PROJECT $REV"
+					neko $BASE/testrunner/bin/runner.n run-project $BASE/$proj $PROJECT $REV
 				else
 					PROJEXITVAR=1
 				fi
