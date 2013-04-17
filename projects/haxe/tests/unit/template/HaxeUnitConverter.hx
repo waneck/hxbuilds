@@ -28,6 +28,11 @@ class HaxeUnitConverter {
 					err.add(ln);
 					err.add("\n");
 				} else {
+					if (ln.endsWith("START"))
+					{
+						iserr = false;
+					}
+
 					out.add(ln);
 					out.add("\n");
 				}
@@ -40,14 +45,14 @@ class HaxeUnitConverter {
 		}
 		catch(e:haxe.io.Eof) {}
 
-		err.add(try process.stderr.readAll() catch(e:Dynamic) haxe.io.Bytes.alloc(0));
-		var err = err.toString();
+		err.add(try process.stderr.readAll().toString() catch(e:Dynamic) "");
+		var stderr = err.toString();
 		var exit = try process.exitCode() catch(e:Dynamic) 1;
 		if (isDone) exit = 0;
 
 		Sys.stdout().writeString(out.toString());
-		Sys.stderr().writeString(err);
-		if (exit != 0 || iserr || err.length > 0)
+		Sys.stderr().writeString(stderr);
+		if (exit != 0 || iserr || stderr.length > 0)
 		{
 			Sys.exit(1);
 		}

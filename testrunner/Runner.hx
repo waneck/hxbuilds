@@ -175,7 +175,9 @@ class Runner
 							continue;
 					var cur = Sys.getCwd(); cur = cur.substr(0,cur.length-1);
 					Sys.setCwd(path);
-					for (f in FileSystem.readDirectory(path))
+					var files = FileSystem.readDirectory(".");
+					files.sort(Reflect.compare);
+					for (f in files)
 					{
 						if (StringTools.startsWith(f, "exec"))
 						{
@@ -233,7 +235,7 @@ class Runner
 		}
 
 		var ctime = haxe.Timer.stamp();
-		var process = new Process(cmd, args);
+		var process = new Process(Sys.getCwd() + cmd, args);
 		var out = process.stdout.readAll().toString();
 		var err = process.stderr.readAll().toString();
 		var exit = process.exitCode();

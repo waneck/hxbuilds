@@ -1,6 +1,6 @@
 #!/bin/sh
 #neko ../../template/huc.n xvfb-run ../../repo/mxmlc/bin/adl app.xml
-mono ../../template/huc/bin/huc.exe xvfb-run ../../repo/mxmlc/bin/adl app.xml
+mono ../../template/bin/bin/bin.exe xvfb-run ../../repo/mxmlc/bin/adl app.xml
 #not sure why, but we need this:
 pkill Xvfb
 pkill adt

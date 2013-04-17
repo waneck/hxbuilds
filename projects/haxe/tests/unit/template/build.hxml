@@ -1,3 +1,5 @@
 -main HaxeUnitConverter
-#-neko huc.n
--cs huc
+-cs bin
+--next
+-main HaxeUnitConverter
+-neko huc.n
