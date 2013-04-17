@@ -21,28 +21,31 @@
 				</ul>-->
 			</div>
 			<div id="content">
-				@for (project in projects)
-				{
-				<h1 class="title"><a href="">@project.title</a></h1>
-				<div class="tests">
-					@for (test in project.tests)
-					{
-						<h2><a href="">@test.title</a></h2>
-						<table class="testresults">
-						@for (target in test.targets)
-						{
-							<tr>
-								<th>@target.name</th>
-								@for (res in target.results)
-								{
-								<th class="@res.cls" @if(res.id != 0) { onClick="window.location.href = '/result/@res.id'"} ></th>
-								}
-							</tr>
-						}
-						</table>
-					}
+				<h1 class="title"><a href="">@testPart for @target [@project @revision]</a></h1>
+				<div class="diff">
+					<p>stdout</p>
+					<pre>@stdout</pre>
+					<p>stderr</p>
+					<pre>@stderr</pre>
 				</div>
-				}
+				<table class="history">
+					<tr>
+						<th>Rev</th>
+						<th>Date</th>
+						<th>Status</th>
+						<th>Action</th>
+					</tr>
+					@for(i in 0...results.length)
+					{
+					<tr class="@if(i%2 == 0){even}else{odd}">
+						@{ var r = results[i]; }
+						<th>@r.rev</th>
+						<th>@r.date</th>
+						<th class="@r.status">&nbsp;</th>
+						<th><a href="/result/@r.id">View</a></th>
+					</tr>
+					}
+				</table>
 			</div>
 		</div>
 	</body>
