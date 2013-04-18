@@ -114,7 +114,7 @@ class Runner
 				c.project = project;
 				c.name = name;
 				c.email = email;
-				c.testName = name;
+				c.testName = tname;
 				c.insert();
 			}
 		},
