@@ -1,10 +1,25 @@
+table.history th.gtest 
+{
+    background-color: #00CC99;
+}
+
+table.history th.rtest 
+{
+    background-color: #A31919;
+}
+
+table.history th.ytest 
+{
+    background-color: #FFFFFF;
+}
+
 .gtest {
     width: 6px;
     background-color: #00CC99;
 }
 .ytest {
     width: 6px;
-    background-color: #A31919;
+    background-color: #FFFFFF;
 }
 .rtest {
     width: 6px;

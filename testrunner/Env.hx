@@ -28,5 +28,6 @@ class Env
 		} else {
 			Manager.cnx = Sqlite.open(data.sqlite);
 		}
+		Manager.initialize();
 	}
 }

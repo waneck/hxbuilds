@@ -7,7 +7,7 @@ class TestView extends erazor.macro.SimpleTemplate<{
 		title:String,
 		tests:Array<{
 			title:String,
-			targets:Array<{ name:String, results:Array<String> }>
+			targets:Array<{ name:String, results:Array<{cls:String, id:Int}> }>
 		}>
 	}>
 }>
