@@ -251,6 +251,7 @@ class Runner
 					var pr = new Process("mail", ["-s", '[test-runner] "$project $test" failed @ $rev [$target]', contact.email]);
 					var name = contact.name;
 					pr.stdin.writeString('$name,\nThe Test "$project $test" has failed with exit code $exit while running for revision $rev ($target)\n\tstdout:\n$out\n\tsterr:\n$err');
+					pr.stdin.close();
 					pr.exitCode();
 				}
 			}
