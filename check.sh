@@ -21,20 +21,20 @@ for proj in projects/*; do
 				if [ ! -f "build/.r$REV" ] && [ ! -f "out/${PROJECT}_r$REV.tar.gz" ]; then
 					rm -rf build
 					mkdir build
-					./build.sh $REV && touch build/.r$REV || PROJEXITVAR=1
+					./build.sh "$REV" && touch "build/.r$REV" || PROJEXITVAR=1
 				fi
-				if [ -f build/.r$REV ]; then
-					tar -zcvf out/${PROJECT}_r$REV.tar.gz -C build .
+				if [ -f "build/.r$REV" ]; then
+					tar -zcvf "out/${PROJECT}_r$REV.tar.gz" -C build .
 				else
 					PROJEXITVAR=1
 				fi
 
-				if [ -f out/${PROJECT}_r$REV.tar.gz ]; then
+				if [ -f "out/${PROJECT}_r$REV.tar.gz" ]; then
 					cd ../../../..
-					./sync.sh $BASE/$proj/${plat}/out/${PROJECT}_r$REV.tar.gz $(basename $proj)/$(basename ${plat})/${PROJECT}_r$REV.tar.gz || EXITVAR=1
-					./sync.sh $BASE/$proj/${plat}/out/${PROJECT}_r$REV.tar.gz $(basename $proj)/$(basename ${plat})/${PROJECT}_latest.tar.gz || EXITVAR=1
+					./sync.sh "$BASE/$proj/${plat}/out/${PROJECT}_r$REV.tar.gz" "$(basename $proj)/$(basename ${plat})/${PROJECT}_$(date +'%Y%m%d_%H%M')_$REV.tar.gz" || EXITVAR=1
+					./sync.sh "$BASE/$proj/${plat}/out/${PROJECT}_r$REV.tar.gz" "$(basename $proj)/$(basename ${plat})/${PROJECT}_latest.tar.gz" || EXITVAR=1
 					echo "neko $BASE/testrunner/bin/runner.n run-project $BASE/$proj $PROJECT $REV"
-					neko $BASE/testrunner/bin/runner.n run-project $BASE/$proj $PROJECT $REV
+					neko $BASE/testrunner/bin/runner.n run-project $BASE/$proj $PROJECT "$REV"
 				else
 					PROJEXITVAR=1
 				fi

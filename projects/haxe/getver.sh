@@ -1,2 +1,2 @@
 cd repo/haxe
-echo "$(git describe --always)"
+echo "$(git rev-parse --abbrev-ref HEAD)_$(git describe --always)"
