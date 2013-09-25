@@ -1,3 +1,4 @@
 #!/bin/sh
 #neko ../../template/huc.n phantomjs bin
-mono ../../template/bin/bin/bin.exe phantomjs --web-security=no bin
+#mono ../../template/bin/bin/bin.exe phantomjs --web-security=no bin
+mono ../../template/bin/bin/bin.exe nodejs bin
