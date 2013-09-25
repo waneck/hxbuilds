@@ -8,6 +8,6 @@ if [ $# -eq 0 ]; then
 fi
 
 cd ../../repo/haxe
-rm haxe
-make clean && make all && make tools && cp haxe $LNX/build/haxe && cp -rf std $LNX/build/ && exit 0
+rm haxe*
+make clean && make all && make tools && cp haxe* $LNX/build/ && cp -rf std $LNX/build/ && exit 0
 exit 1

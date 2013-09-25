@@ -1,9 +1,8 @@
 #!/bin/sh
 cd repo/neko
-OLDREV=$(git svn find-rev git-svn)
-git svn fetch
-git svn rebase
-REV=$(git svn find-rev git-svn)
+OLDREV=$(git rev-parse HEAD)
+git pull
+REV=$(git rev-parse HEAD)
 if [ ! $OLDREV = $REV ]; then
 	touch ../.updated
 fi

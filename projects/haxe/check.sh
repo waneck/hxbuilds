@@ -1,19 +1,8 @@
 #!/bin/sh
-cd repo
-cd ocamllibs
-OLDREV=$(git svn find-rev git-svn)
-git svn fetch
-git svn rebase
-REV=$(git svn find-rev git-svn)
-if [ ! $OLDREV = $REV ]; then
-	touch ../.updated
-fi
-
-cd ../haxe
-OLDREV=$(git svn find-rev git-svn)
-git svn fetch
-git svn rebase
-REV=$(git svn find-rev git-svn)
+cd repo/haxe
+OLDREV=$(git rev-parse HEAD)
+git pull
+REV=$(git rev-parse HEAD)
 if [ ! $OLDREV = $REV ]; then
 	touch ../.updated
 fi
