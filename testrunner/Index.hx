@@ -57,7 +57,7 @@ class Index
 			stdout: r.stdout,
 			stderr: r.stderr,
 
-			results: TestResult.manager.search($testPart == r.testPart && $target == r.target && $revision_id < r.revision.id, { limit:20 }, false)
+			results: TestResult.manager.search($testPart == r.testPart && $target == r.target && $revision_id < r.revision.id, { limit:20, orderBy:[-dateRan] }, false)
 				.map(function(r) return { rev: r.revision.revision, date: r.dateRan, status: (r.success ? "gtest" : "rtest"), id: r.id }).array()
 		};
 		Sys.println(new view.ResultView().setData(view).execute());
