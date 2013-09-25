@@ -4,4 +4,4 @@ BASE=$PWD
 TARGET=$(basename $BASE)
 
 cd ../../repo/tests/unit
-haxe -cp ../ -debug -resource res1.txt -resource res2.bin --no-opt -dce full -main unit.Test -${TARGET} -D nodejs "${BASE}/bin"
+haxe -cp ../ -debug -resource res1.txt -resource res2.bin --no-opt -dce full -main unit.Test -D nodejs -${TARGET} "${BASE}/bin"
