@@ -243,14 +243,8 @@ class Runner
 
 		if (exit != 0)
 		{
-			var lastr = TestResult.manager.select($testPart == tp, {orderBy:[-dateRan], limit:1}, false);
-			trace(lastr);
-			if (lastr != null)
-			{
-				trace(lastr.stdout,lastr.stderr);
-				trace(lastr.stdout.length,lastr.stderr.length);
-			}
-			if (lastr == null || lastr.success || lastr.stdout != out || lastr.stderr != err) //don't flood
+			var lastr = TestResult.manager.select($target == target && $testPart == tp, {orderBy:[-dateRan], limit:1}, false);
+			if (lastr == null || lastr.exitCode != exit || lastr.stdout != out || lastr.stderr != err) //don't flood
 			{
 				for (contact in TestContact.manager.search( ($project == t.project) && ($testName == null || $testName == t.name) ))
 				{
