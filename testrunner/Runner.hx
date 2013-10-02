@@ -244,7 +244,7 @@ class Runner
 		if (exit != 0)
 		{
 			var lastr = TestResult.manager.select($target == target && $testPart == tp, {orderBy:[-dateRan], limit:1}, false);
-			if (lastr == null || lastr.exitCode != exit || lastr.stdout != out || lastr.stderr != err) //don't flood
+			if (lastr == null || lastr.exitCode != exit || lastr.stderr != err) //don't flood
 			{
 				for (contact in TestContact.manager.search( ($project == t.project) && ($testName == null || $testName == t.name) ))
 				{
