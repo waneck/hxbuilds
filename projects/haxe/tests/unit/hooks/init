@@ -5,3 +5,8 @@ cd ../hxjava
 git pull
 cd ../hxcs
 git pull
+cd ../../
+cd ../../repo/haxe
+make clean
+make OCAMLC=ocamlc.opt OCAMLOPT=ocamlopt.opt
+make tools
