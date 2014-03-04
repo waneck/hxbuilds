@@ -12,6 +12,7 @@ VERLONG=$2
 NEKOVER=2.0.0
 
 rm -rf tmp
+mkdir -p out
 mkdir -p tmp/haxe/doc
 mkdir -p tmp/installer
 
@@ -29,7 +30,7 @@ fi
 
 cd repo/hxjava
 git pull origin master
-cd ../repo/hxcs
+cd ../hxcs
 git pull origin master
 
 cd ../../
