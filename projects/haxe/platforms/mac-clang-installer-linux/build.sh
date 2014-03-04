@@ -85,16 +85,36 @@ sed -i "s/%%NEKOVER%%/$NEKOVER/g" Distribution
 
 # edit haxe
 cd haxe30.pkg
-rm Payload
+rm Payload Bom
 find ../../haxe | cpio -o | gzip -c > Payload
-mkbom ../../haxe Bom
+INSTKB=$(du -sk ../../haxe)
+sed -i "s/%%INSTKB%%/${INSTKB//[^0-9]/}/g" PackageInfo
+sed -i "s/%%NFILES%%/$(find ../../haxe | wc -l)/g" PackageInfo
+sed -i "s/%%VERSION%%/$CLEANVER/g" PackageInfo
+sed -i "s/%%VERSTRING%%/$VER/g" PackageInfo
+sed -i "s/%%VERLONG%%/$VERLONG/g" PackageInfo
+sed -i "s/%%NEKOVER%%/$NEKOVER/g" PackageInfo
+ls4mkbom ../../haxe/ > /tmp/hxlist
+sed -i "s/1000\\/1000/501\\/20/g" /tmp/hxlist
+mkbom -i /tmp/hxlist Bom
+
+mkbom ../../haxe/ Bom
 cd ..
 
 # edit neko
 cd neko20.pkg
-rm Payload
+rm Payload Bom
 find ../../neko | cpio -o | gzip -c > Payload
-mkbom ../../neko Bom
+INSTKB=$(du -sk ../../neko)
+sed -i "s/%%INSTKB%%/${INSTKB//[^0-9]/}/g" PackageInfo
+sed -i "s/%%NFILES%%/$(find ../../neko | wc -l)/g" PackageInfo
+sed -i "s/%%VERSION%%/$CLEANVER/g" PackageInfo
+sed -i "s/%%VERSTRING%%/$VER/g" PackageInfo
+sed -i "s/%%VERLONG%%/$VERLONG/g" PackageInfo
+sed -i "s/%%NEKOVER%%/$NEKOVER/g" PackageInfo
+ls4mkbom ../../neko/ > /tmp/nlist
+sed -i "s/1000\\/1000/501\\/20/g" /tmp/nlist
+mkbom -i /tmp/nlist Bom
 cd ..
 
 # repackage
