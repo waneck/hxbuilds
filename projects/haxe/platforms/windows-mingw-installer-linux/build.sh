@@ -19,7 +19,7 @@ fi
 
 rm -f haxe*
 make clean && make "ADD_REVISION=$ADDREV" "OCAMLOPT=i686-w64-mingw32-ocamlopt" "OCAMLC=i686-w64-mingw32-ocamlc" && cp haxe $WIN/tmp/resources/haxe/haxe.exe && cp -rf std $WIN/tmp/resources/haxe/
-if [ $? -neq 0 ]; then
+if [ "$?" -neq "0" ]; then
   exit 1
 fi
 
@@ -40,6 +40,7 @@ haxe haxelib.hxml
 cp bin/haxelib.n $WIN/tmp/resources/haxe
 cd $WIN/tmp/resources/haxe
 neko $WIN/../../platforms/common/boot.n -b ../neko/neko.exe haxelib.n
+mv haxelib haxelib.exe
 
 # docs
 cd $WIN/repo/dox
