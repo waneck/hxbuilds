@@ -10,7 +10,8 @@ for proj in projects/*; do
 		cd "${proj}"
 		./check.sh || EXITVAR=1
 
-		REV=$(./getver.sh)
+		REV=$(./getrev.sh)
+		VER=$(./getver.sh)
 		PROJECT=$(basename $proj)
 		PROJEXITVAR=0
 		for plat in installed-platforms/*; do
@@ -21,7 +22,7 @@ for proj in projects/*; do
 				if [ ! -f "build/.r$REV" ] && [ ! -f "out/${PROJECT}_r$REV.tar.gz" ]; then
 					rm -rf build
 					mkdir build
-					./build.sh "$REV" && touch "build/.r$REV" || PROJEXITVAR=1
+					./build.sh "$REV" "$VER" && touch "build/.r$REV" || PROJEXITVAR=1
 				fi
 				if [ -f "build/.r$REV" ]; then
 					tar -zcvf "out/${PROJECT}_r$REV.tar.gz" build/*

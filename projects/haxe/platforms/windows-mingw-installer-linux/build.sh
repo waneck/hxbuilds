@@ -1,6 +1,13 @@
 #!/bin/bash
 
 WIN=$PWD
+if [ $# -lt 2 ]; then
+	echo "Too few arguments supplied: $1"
+	exit 1
+fi
+
+REV=$1
+VER=$2
 
 rm -rf tmp
 mkdir -p tmp/resources/haxe/doc
@@ -15,6 +22,8 @@ BRANCH=$(git rev-parse --abbrev-ref HEAD)
 ADDREV=1
 if [ $BRANCH == "master" ]; then
   ADDREV=0
+else
+  VER=$2 dev-$(git describe --always)
 fi
 
 rm -f haxe*
@@ -51,6 +60,7 @@ haxe std.hxml || exit 1
 cp -Rf bin/pages/* $WIN/tmp/resources/haxe/doc || exit 1
 
 # ready to execute!
+sed 's/%%VERSION%%/$VER/g' installer.nsi
 cd $WIN/tmp
 makensis installer.nsi || exit 1
 cp *.exe ../build

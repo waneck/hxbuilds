@@ -1,2 +1,2 @@
 cd repo/haxe
-echo "$(git rev-parse --abbrev-ref HEAD)_$(git describe --always)"
+echo "$(git describe --tags $(git rev-list --tags --max-count=1))"
