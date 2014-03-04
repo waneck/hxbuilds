@@ -8,6 +8,7 @@ fi
 
 REV=$1
 VER=$2
+VERLONG=$2
 
 rm -rf tmp
 mkdir -p tmp/resources/haxe/doc
@@ -23,11 +24,17 @@ ADDREV=1
 if [ $BRANCH == "master" ]; then
   ADDREV=0
 else
-  VER=$2 dev-$(git describe --always)
+  VER="${2}-dev-$(git describe --always)"
+  VERLONG="${2} development snapshot ($(git describe --always))"
 fi
+
+# CLEANVER=$(echo $VER | egrep -o [0-9\.]+)
+CLEANVER=${2//[^0-9\.]/}
+echo "Installer for $VER ($CLEANVER)"
 
 rm -f haxe*
 (make clean && make "ADD_REVISION=$ADDREV" "OCAMLOPT=i686-w64-mingw32-ocamlopt" "OCAMLC=i686-w64-mingw32-ocamlc" && cp haxe $WIN/tmp/resources/haxe/haxe.exe && cp -rf std $WIN/tmp/resources/haxe/) || exit 1
+i686-w64-mingw32-g++ -static extra/setup.cpp -o $WIN/tmp/resources/haxe/haxesetup.exe || exit 1
 
 # extra
 cp extra/*.txt $WIN/tmp/resources/haxe
@@ -60,8 +67,10 @@ haxe std.hxml || exit 1
 cp -Rf bin/pages/* $WIN/tmp/resources/haxe/doc || exit 1
 
 # ready to execute!
-sed 's/%%VERSION%%/$VER/g' installer.nsi
 cd $WIN/tmp
+sed -i "s/%%VERSION%%/$CLEANVER/g" installer.nsi
+sed -i "s/%%VERSTRING%%/$VER/g" installer.nsi
+sed -i "s/%%VERLONG%%/$VERLONG/g" installer.nsi
 makensis installer.nsi || exit 1
 cp *.exe ../build
 
