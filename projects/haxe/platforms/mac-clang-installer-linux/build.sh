@@ -69,6 +69,8 @@ cp bin/haxelib.n $MAC/tmp/haxe
 cd $MAC/tmp/haxe
 neko $MAC/../../platforms/common/boot.n -b ../neko/neko haxelib.n
 rm haxelib.n
+mkdir -p $MAC/tmp/haxe/lib
+chmod 777 $MAC/tmp/haxe/lib
 
 # docs
 cd $MAC/repo/dox
