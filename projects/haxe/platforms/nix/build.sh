@@ -7,6 +7,9 @@ if [ $# -eq 0 ]; then
 	exit 1
 fi
 
+mkdir -p out
+mkdir -p build
+
 cd ../../repo/haxe
 rm haxe*
 (make clean && make all "ADD_REVISION=1" && make tools && cp haxe* $LNX/build/ && cp -rf std $LNX/build/) || exit 1
