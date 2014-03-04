@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 LNX=$PWD
 
@@ -9,5 +9,9 @@ fi
 
 cd ../../repo/neko
 rm -rf bin
-make clean && make all && cp -rf bin $LNX/build/ && exit 0
+if [ $(getconf LONG_BIT) -eq 32 ]; then
+  make clean && make all "CFLAGS= -Wall -O3 -fPIC -fomit-frame-pointer -I vm -D_GNU_SOURCE -I libs/common -mincoming-stack-boundary=2" && cp -rf bin $LNX/build/ && exit 0
+else
+  make clean && make all && cp -rf bin $LNX/build/ && exit 0
+fi
 exit 1
