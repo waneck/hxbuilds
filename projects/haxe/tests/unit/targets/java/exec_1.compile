@@ -4,4 +4,5 @@ BASE=$PWD
 TARGET=$(basename $BASE)
 
 cd ../../repo/tests/unit
-haxe -cp ../ -debug -resource res1.txt -resource res2.bin --no-opt -dce full -main unit.Test -${TARGET} "${BASE}/bin"
+haxelib run hxjava native_java/hxjava_build.txt --out native_java/native
+haxe -cp ../ -debug -resource res1.txt -resource res2.bin --no-opt -dce full -main unit.Test -${TARGET} "${BASE}/bin" -java-lib native_java/native.jar
