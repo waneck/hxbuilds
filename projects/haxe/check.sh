@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 cd repo/haxe
 if [ ! -e ../.updated ]; then
 	BRANCH=$(git rev-parse --abbrev-ref HEAD)
