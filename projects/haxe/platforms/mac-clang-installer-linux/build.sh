@@ -101,10 +101,9 @@ rm Payload
 cd ../../files
 find . | cpio -o --format odc | gzip -c > ../installer/files.pkg/Payload
 cd ../installer/files.pkg
-INSTKB=$(du -sk ../../files))
+INSTKB=$(du -sk ../../files)
 INSTKBH=$(expr ${INSTKB//[^0-9]/} - 4)
 sed -i "s/%%INSTKB%%/$INSTKBH/g" PackageInfo
-sed -i "s/%%NFILES%%/$(expr $(find ../../haxe | wc -l) - 1)/g" PackageInfo
 sed -i "s/%%VERSION%%/$CLEANVER/g" PackageInfo
 sed -i "s/%%VERSTRING%%/$VER/g" PackageInfo
 sed -i "s/%%VERLONG%%/$VERLONG/g" PackageInfo
@@ -115,8 +114,7 @@ sed -i "s/%%VERSION%%/$CLEANVER/g" Distribution
 sed -i "s/%%VERSTRING%%/$VER/g" Distribution
 sed -i "s/%%VERLONG%%/$VERLONG/g" Distribution
 sed -i "s/%%NEKOVER%%/$NEKOVER/g" Distribution
-sed -i "s/%%INSTKBN%%/$INSTKBN/g" Distribution
-sed -i "s/%%INSTKBH%%/$INSTKBH/g" Distribution
+sed -i "s/%%INSTKB%%/$INSTKBH/g" Distribution
 
 # repackage
 xar -cf ../../build/haxe-${VER}.pkg *
