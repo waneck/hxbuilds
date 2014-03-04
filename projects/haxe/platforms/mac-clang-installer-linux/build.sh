@@ -20,6 +20,15 @@ if [ ! -e neko-stable.tar.gz ]; then
   exit 1
 fi
 
+# update projects
+
+cd repo/hxjava
+git pull origin master
+cd ../repo/hxcs
+git pull origin master
+
+cd ../../
+
 cd ../../repo/haxe
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 ADDREV=1
@@ -40,6 +49,8 @@ export MACOSX_DEPLOYMENT_TARGET=10.5
 
 # extra
 cp extra/*.txt $MAC/tmp/haxe
+mkdir $MAC/tmp/haxe/lib-client
+chmod 777 $MAC/tmp/haxe/lib-client
 
 # neko
 tar -zxvf $MAC/neko-stable.tar.gz -C $MAC/tmp
@@ -72,5 +83,21 @@ sed -i "s/%%VERSTRING%%/$VER/g" Distribution
 sed -i "s/%%VERLONG%%/$VERLONG/g" Distribution
 sed -i "s/%%NEKOVER%%/$NEKOVER/g" Distribution
 
+# edit haxe
+cd haxe30.pkg
+rm Payload
+find ../../haxe | cpio -o | gzip -c > Payload
+mkbom ../../haxe Bom
+cd ..
+
+# edit neko
+cd neko20.pkg
+rm Payload
+find ../../neko | cpio -o | gzip -c > Payload
+mkbom ../../neko Bom
+cd ..
+
+# repackage
+xar -cf ../../build/haxe-${VER}.pkg *
 
 exit 0

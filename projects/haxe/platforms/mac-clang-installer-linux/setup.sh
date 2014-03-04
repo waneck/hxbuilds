@@ -22,3 +22,15 @@ cd bomutils
 make
 sudo make install
 
+# hxjava
+git clone git@github.com:HaxeFoundation/hxjava.git
+haxelib dev hxjava hxjava
+
+# hxcs
+git clone git@github.com:HaxeFoundation/hxcs.git
+haxelib dev hxcs hxcs
+
+# boot neko
+cd ../../platforms/common
+nekoc boot.neko
+
