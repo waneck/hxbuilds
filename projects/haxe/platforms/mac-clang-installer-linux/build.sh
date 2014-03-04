@@ -117,6 +117,6 @@ sed -i "s/%%NEKOVER%%/$NEKOVER/g" Distribution
 sed -i "s/%%INSTKB%%/$INSTKBH/g" Distribution
 
 # repackage
-xar -cf ../../build/haxe-${VER}.pkg *
+xar --compression none -cf ../../build/haxe-${VER}.pkg *
 
 exit 0
