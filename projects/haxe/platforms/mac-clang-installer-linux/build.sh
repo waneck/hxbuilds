@@ -78,18 +78,17 @@ cp -Rf bin/pages/* $MAC/tmp/haxe/doc || exit 1
 # ready to execute!
 cd $MAC/tmp/installer
 xar -xf ../../installer-structure.pkg .
-sed -i "s/%%VERSION%%/$CLEANVER/g" Distribution
-sed -i "s/%%VERSTRING%%/$VER/g" Distribution
-sed -i "s/%%VERLONG%%/$VERLONG/g" Distribution
-sed -i "s/%%NEKOVER%%/$NEKOVER/g" Distribution
 
 # edit haxe
 cd haxe30.pkg
 rm Payload Bom
-find ../../haxe | cpio -o | gzip -c > Payload
+cd ../../haxe
+find . | cpio -o --format odc | gzip -c > ../installer/haxe30.pkg/Payload
+cd ../installer/haxe30.pkg
 INSTKB=$(du -sk ../../haxe)
-sed -i "s/%%INSTKB%%/${INSTKB//[^0-9]/}/g" PackageInfo
-sed -i "s/%%NFILES%%/$(find ../../haxe | wc -l)/g" PackageInfo
+INSTKBH=$(expr ${INSTKB//[^0-9]/} - 4)
+sed -i "s/%%INSTKB%%/$INSTKBH/g" PackageInfo
+sed -i "s/%%NFILES%%/$(expr $(find ../../haxe | wc -l) - 1)/g" PackageInfo
 sed -i "s/%%VERSION%%/$CLEANVER/g" PackageInfo
 sed -i "s/%%VERSTRING%%/$VER/g" PackageInfo
 sed -i "s/%%VERLONG%%/$VERLONG/g" PackageInfo
@@ -104,10 +103,14 @@ cd ..
 # edit neko
 cd neko20.pkg
 rm Payload Bom
-find ../../neko | cpio -o | gzip -c > Payload
+cd ../../neko
+find . | cpio -o --format odc | gzip -c > ../installer/neko20.pkg/Payload
+cd ../installer/neko20.pkg
+find ../../neko | cpio -o --format odc | gzip -c > Payload
 INSTKB=$(du -sk ../../neko)
-sed -i "s/%%INSTKB%%/${INSTKB//[^0-9]/}/g" PackageInfo
-sed -i "s/%%NFILES%%/$(find ../../neko | wc -l)/g" PackageInfo
+INSTKBN=$(expr ${INSTKB//[^0-9]/} - 4)
+sed -i "s/%%INSTKB%%/$INSTKBN/g" PackageInfo
+sed -i "s/%%NFILES%%/$(expr $(find ../../neko | wc -l) - 1)/g" PackageInfo
 sed -i "s/%%VERSION%%/$CLEANVER/g" PackageInfo
 sed -i "s/%%VERSTRING%%/$VER/g" PackageInfo
 sed -i "s/%%VERLONG%%/$VERLONG/g" PackageInfo
@@ -116,6 +119,13 @@ ls4mkbom ../../neko/ > /tmp/nlist
 sed -i "s/1000\\/1000/501\\/20/g" /tmp/nlist
 mkbom -i /tmp/nlist Bom
 cd ..
+
+sed -i "s/%%VERSION%%/$CLEANVER/g" Distribution
+sed -i "s/%%VERSTRING%%/$VER/g" Distribution
+sed -i "s/%%VERLONG%%/$VERLONG/g" Distribution
+sed -i "s/%%NEKOVER%%/$NEKOVER/g" Distribution
+sed -i "s/%%INSTKBN%%/$INSTKBN/g" Distribution
+sed -i "s/%%INSTKBH%%/$INSTKBH/g" Distribution
 
 # repackage
 xar -cf ../../build/haxe-${VER}.pkg *
