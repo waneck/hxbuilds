@@ -23,6 +23,8 @@ if [ $? -neq 0 ]; then
   exit 1
 fi
 
+cp extra/*.txt $WIN/tmp/resources/haxe
+cp -rf extra/haxelib_src/src/
 cp extra/*.nsi $WIN/tmp
 cp extra/*.nsh $WIN/tmp
 cp -rf extra/images $WIN/tmp
