@@ -20,6 +20,11 @@ if [ ! -e neko-stable.tar.gz ]; then
   exit 1
 fi
 
+if [ ! -d scripts ]; then
+	echo "Error: scripts folder not found"
+	exit 1
+fi
+
 # update projects
 
 cd repo/hxjava
@@ -76,16 +81,27 @@ haxe std.hxml || exit 1
 cp -Rf bin/pages/* $MAC/tmp/haxe/doc || exit 1
 
 # ready to execute!
-cd $MAC/tmp/installer
+cd $MAC/tmp
+mkdir files
+mv haxe files
+mv neko files
+cp -Rf ../scripts files
+cd files
+tar -zcvf haxe.tar.gz haxe
+tar -zcvf neko.tar.gz neko
+tar -zcvf scripts.tar.gz scripts
+rm -rf haxe neko scripts
+
+cd ../installer
 xar -xf ../../installer-structure.pkg .
 
 # edit haxe
-cd haxe30.pkg
-rm Payload Bom
-cd ../../haxe
-find . | cpio -o --format odc | gzip -c > ../installer/haxe30.pkg/Payload
-cd ../installer/haxe30.pkg
-INSTKB=$(du -sk ../../haxe)
+cd files.pkg
+rm Payload
+cd ../../files
+find . | cpio -o --format odc | gzip -c > ../installer/files.pkg/Payload
+cd ../installer/files.pkg
+INSTKB=$(du -sk ../../files))
 INSTKBH=$(expr ${INSTKB//[^0-9]/} - 4)
 sed -i "s/%%INSTKB%%/$INSTKBH/g" PackageInfo
 sed -i "s/%%NFILES%%/$(expr $(find ../../haxe | wc -l) - 1)/g" PackageInfo
@@ -93,31 +109,6 @@ sed -i "s/%%VERSION%%/$CLEANVER/g" PackageInfo
 sed -i "s/%%VERSTRING%%/$VER/g" PackageInfo
 sed -i "s/%%VERLONG%%/$VERLONG/g" PackageInfo
 sed -i "s/%%NEKOVER%%/$NEKOVER/g" PackageInfo
-ls4mkbom ../../haxe/ > /tmp/hxlist
-sed -i "s/1000\\/1000/501\\/20/g" /tmp/hxlist
-mkbom -i /tmp/hxlist Bom
-
-mkbom ../../haxe/ Bom
-cd ..
-
-# edit neko
-cd neko20.pkg
-rm Payload Bom
-cd ../../neko
-find . | cpio -o --format odc | gzip -c > ../installer/neko20.pkg/Payload
-cd ../installer/neko20.pkg
-find ../../neko | cpio -o --format odc | gzip -c > Payload
-INSTKB=$(du -sk ../../neko)
-INSTKBN=$(expr ${INSTKB//[^0-9]/} - 4)
-sed -i "s/%%INSTKB%%/$INSTKBN/g" PackageInfo
-sed -i "s/%%NFILES%%/$(expr $(find ../../neko | wc -l) - 1)/g" PackageInfo
-sed -i "s/%%VERSION%%/$CLEANVER/g" PackageInfo
-sed -i "s/%%VERSTRING%%/$VER/g" PackageInfo
-sed -i "s/%%VERLONG%%/$VERLONG/g" PackageInfo
-sed -i "s/%%NEKOVER%%/$NEKOVER/g" PackageInfo
-ls4mkbom ../../neko/ > /tmp/nlist
-sed -i "s/1000\\/1000/501\\/20/g" /tmp/nlist
-mkbom -i /tmp/nlist Bom
 cd ..
 
 sed -i "s/%%VERSION%%/$CLEANVER/g" Distribution
