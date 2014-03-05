@@ -15,5 +15,13 @@ if [ $BRANCH == "master" ]; then
 fi
 rm -f haxe*
 export MACOSX_DEPLOYMENT_TARGET=10.5
-make clean && make "ADD_REVISION=$ADDREV" "OCAMLOPT=x86_64-apple-darwin11-ocamlopt.opt" "OCAMLC=x86_64-apple-darwin11-ocamlopt.opt" && cp haxe $MAC/build/haxe && cp -rf std $MAC/build/ && echo "#!/bin/sh" > $MAC/build/haxelib && echo "haxe --run tools.haxelib.Main \"\$@\"" >> $MAC/build/haxelib && chmod 755 $MAC/build/haxelib && exit 0
-exit 1
+(make clean && make "ADD_REVISION=$ADDREV" "OCAMLOPT=x86_64-apple-darwin11-ocamlopt.opt" "OCAMLC=x86_64-apple-darwin11-ocamlopt.opt" && cp haxe $MAC/build/haxe && cp -rf std $MAC/build/) || exit 1
+cp extra/*.txt $MAC/build
+
+# haxelib
+cd extra/haxelib_src
+haxe haxelib.hxml
+mv bin/haxelib.n $MAC/build
+cd $MAC/build
+neko $MAC/../../platforms/common/boot.n -b $MAC/../../platforms/common/neko-mac haxelib.n
+rm haxelib.n
