@@ -23,7 +23,7 @@ cd hxbuilds/projects
 cd haxe
 # select which platforms you want to build for
 mkdir installed-platforms && cd installed-platforms
-ln -s ../platforms/nix .
+ln -s ../platforms/nix ./platform-name # e.g. linux32 on 32-bits, linux64 on 64 and so on
 # repeat the above for any other platform you want to build
 
 # setup neko
