@@ -9,7 +9,7 @@ fi
 
 cd ../../repo/neko
 rm -rf bin
-if [ $(getconf LONG_BIT) -eq 32 ]; then
+if [ $(uname -m) = "i686" ]; then
   make clean && make all "CFLAGS= -Wall -O3 -fPIC -fomit-frame-pointer -I vm -D_GNU_SOURCE -I libs/common -mincoming-stack-boundary=2" && cp -rf bin $LNX/build/ && exit 0
 else
   make clean && make all && cp -rf bin $LNX/build/ && exit 0
