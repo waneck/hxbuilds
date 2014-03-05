@@ -7,8 +7,12 @@ simple haxe build server script
 
 - install and configure s3cmd
 - install chosen ocaml version / cross-compilers
-- for neko, install build essential and optionally the following libraries:
-  - TBD
+- for neko, install build essential and the following libraries:
+  - `libgc-dev`
+  - `libmysqlclient-dev`
+  - `libpcre3-dev`
+  - `libzip-dev`
+  - `apache2-threaded-dev`
 
 ### Initial setup
 ```bash
