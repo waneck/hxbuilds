@@ -49,7 +49,7 @@ mv $WIN/tmp/resources/neko* $WIN/tmp/resources/neko
 # haxelib
 cd extra/haxelib_src
 haxe haxelib.hxml
-cp bin/haxelib.n $WIN/tmp/resources/haxe
+mv bin/haxelib.n $WIN/tmp/resources/haxe
 cd $WIN/tmp/resources/haxe
 neko $WIN/../../platforms/common/boot.n -b ../neko/neko.exe haxelib.n
 mv haxelib haxelib.exe
