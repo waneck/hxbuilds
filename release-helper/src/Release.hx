@@ -7,10 +7,19 @@ class Config {
 	public var fileName:String;
 	public var targets:Array<String>;
 	public var haxeVersion:String;
+	public var targetFileNameMap:Map<String, String>;
 	
 	public function new() {
 		buildServerUrl = "http://hxbuilds.s3-website-us-east-1.amazonaws.com/builds/haxe/";
 		targets = ["linux32", "linux64", "mac-installer", "mac", "windows-installer", "windows"];
+		targetFileNameMap = [
+			"linux32" => "linux32",
+			"linux64" => "linux64",
+			"mac-installer" => "osx-installer",
+			"mac" => "osx",
+			"windows-installer" => "win",
+			"windows" => "win"
+		];
 	}
 }
 
@@ -111,7 +120,7 @@ class Release {
 	
 	static function onData(target:String, s:String) {
 		Sys.println('Received content for $target');
-		var name = 'haxe-${config.haxeVersion}-$target';
+		var name = 'haxe-${config.haxeVersion}-${config.targetFileNameMap[target]}';
 		switch(target) {
 			case "linux32" | "linux64" | "mac":
 				File.saveContent(name + ".tar.gz", s);
