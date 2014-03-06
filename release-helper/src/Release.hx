@@ -121,6 +121,10 @@ class Release {
 	static function onData(target:String, s:String) {
 		Sys.println('Received content for $target');
 		var name = 'haxe-${config.haxeVersion}-${config.targetFileNameMap[target]}';
+		if (!sys.FileSystem.exists(config.haxeVersion)) {
+			sys.FileSystem.createDirectory(config.haxeVersion);
+		}
+		name = config.haxeVersion + "/" + name;
 		switch(target) {
 			case "linux32" | "linux64" | "mac":
 				File.saveContent(name + ".tar.gz", s);
