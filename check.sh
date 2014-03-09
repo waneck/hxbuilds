@@ -32,7 +32,7 @@ for proj in projects/*; do
 
 				if [ -f "out/${PROJECT}_r$REV.tar.gz" ]; then
 					cd ../../../..
-					./sync.sh "$BASE/$proj/${plat}/out/${PROJECT}_r$REV.tar.gz" "$(basename $proj)/$(basename ${plat})/${PROJECT}_$(date +'%Y-%m-%d')_$REV.tar.gz" || EXITVAR=1
+					./sync.sh "$BASE/$proj/${plat}/out/${PROJECT}_r$REV.tar.gz" "$(basename $proj)/$(basename ${plat})/${PROJECT}_$(date -u +'%Y-%m-%d')_$REV.tar.gz" || EXITVAR=1
 					./sync.sh "$BASE/$proj/${plat}/out/${PROJECT}_r$REV.tar.gz" "$(basename $proj)/$(basename ${plat})/${PROJECT}_latest.tar.gz" || EXITVAR=1
 					echo "neko $BASE/testrunner/bin/runner.n run-project $BASE/$proj $PROJECT $REV"
 					neko $BASE/testrunner/bin/runner.n run-project $BASE/$proj $PROJECT "$REV"
