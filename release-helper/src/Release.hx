@@ -8,27 +8,28 @@ class Config {
 	public var targets:Array<String>;
 	public var haxeVersion:String;
 	public var targetFileNameMap:Map<String, String>;
-	
+
 	public function new() {
 		buildServerUrl = "http://hxbuilds.s3-website-us-east-1.amazonaws.com/builds/haxe/";
-		targets = ["linux32", "linux64", "mac-installer", "mac", "windows-installer", "windows"];
+		targets = ["linux32", "linux64", "mac-installer", "mac", "windows-installer", "windows", "raspbian"];
 		targetFileNameMap = [
 			"linux32" => "linux32",
 			"linux64" => "linux64",
 			"mac-installer" => "osx-installer",
 			"mac" => "osx",
 			"windows-installer" => "win",
-			"windows" => "win"
+			"windows" => "win",
+			"raspbian" => "raspi"
 		];
 	}
 }
 
 class Release {
-	
+
 	static var config = new Config();
 	static var handledTargets = 0;
 	static var failed = false;
-	
+
 	static function main() {
 		var argParser = hxargs.Args.generate([
 			@doc("The base server URL to fetch builds from")
@@ -44,9 +45,9 @@ class Release {
 				config.fileName = fileName;
 			},
 		]);
-		
+
 		argParser.parse(Sys.args());
-		
+
 		if (config.fileName == null) {
 			Sys.println("Required argument -fileName is missing");
 			Sys.println(argParser.getDoc());
@@ -56,15 +57,15 @@ class Release {
 			Sys.println(argParser.getDoc());
 			Sys.exit(1);
 		}
-		
+
 		Sys.println("Downloading files");
 
 		for (target in config.targets) {
 			neko.vm.Thread.create(handleTarget.bind(target));
 		}
-				
+
 		while(handledTargets < config.targets.length) { }
-		
+
 		if (failed) {
 			Sys.println("Command " + Sys.args().join(" ") + " failed");
 			Sys.exit(1);
@@ -89,7 +90,7 @@ class Release {
 			throw e;
 		}
 	}
-	
+
 	static function unpack(s:String) {
 		var gzReader = new format.gz.Reader(new StringInput(s));
 		var out = new BytesOutput();
@@ -98,7 +99,7 @@ class Release {
 		var tarReader = new format.tar.Reader(new BytesInput(out.getBytes()));
 		return tarReader.read();
 	}
-	
+
 	static function zip(data:List<format.tar.Data.Entry>) {
 		var entries = new List();
 		for (file in data) {
@@ -117,7 +118,7 @@ class Release {
 		}
 		return entries;
 	}
-	
+
 	static function onData(target:String, s:String) {
 		Sys.println('Received content for $target');
 		var name = 'haxe-${config.haxeVersion}-${config.targetFileNameMap[target]}';
@@ -126,7 +127,7 @@ class Release {
 		}
 		name = config.haxeVersion + "/" + name;
 		switch(target) {
-			case "linux32" | "linux64" | "mac":
+			case "linux32" | "linux64" | "mac" | "raspbian":
 				File.saveContent(name + ".tar.gz", s);
 			case "windows":
 				var data = unpack(s);
@@ -144,7 +145,7 @@ class Release {
 		handledTargets++;
 
 	}
-	
+
 	static function onError(target:String, s:String) {
 		Sys.println('Could not retrieve content for $target: $s');
 		failed = true;
