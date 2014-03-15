@@ -11,11 +11,17 @@ if [ ! -e ../.updated ]; then
 	fi
 fi
 
+OLDVER=$(git describe --tags $(git rev-list --tags --max-count=1))
 OLDREV=$(git rev-parse HEAD)
 git submodule update
 git pull
 git submodule update
+VER=$(git describe --tags $(git rev-list --tags --max-count=1))
 REV=$(git rev-parse HEAD)
 if [ ! $OLDREV = $REV ]; then
 	touch ../.updated
+elif [ ! $VER = $OLDVER ]; then
+  # ensure we're on master
+  git checkout master
+  touch ../.updated
 fi
