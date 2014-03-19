@@ -18,7 +18,7 @@ if [ $BRANCH == "master" ]; then
 fi
 rm haxe*
 (make clean && make all "ADD_REVISION=$ADDREV" && make tools && cp haxe* $LNX/build/ && cp -rf std $LNX/build/) || exit 1
-cp extra/*.txt $LNX/build
+cp extra/{LICENSE,CONTRIB,CHANGES}.txt $LNX/tmp/haxe
 
 # haxelib
 cd extra/haxelib_src

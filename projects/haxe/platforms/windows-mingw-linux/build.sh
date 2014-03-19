@@ -10,7 +10,7 @@ if [ $BRANCH == "master" ]; then
 fi
 rm -f haxe*
 (make clean && make "ADD_REVISION=$ADDREV" "OCAMLOPT=i686-w64-mingw32-ocamlopt" "OCAMLC=i686-w64-mingw32-ocamlc" && cp haxe $WIN/build/haxe.exe && cp -rf std $WIN/build/) || exit 1
-cp extra/*.txt $WIN/build
+cp extra/{LICENSE,CONTRIB,CHANGES}.txt $WIN/build
 
 # haxelib
 cd extra/haxelib_src

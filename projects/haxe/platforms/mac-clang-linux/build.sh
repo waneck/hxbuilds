@@ -16,7 +16,7 @@ fi
 rm -f haxe*
 export MACOSX_DEPLOYMENT_TARGET=10.5
 (make clean && make "ADD_REVISION=$ADDREV" "OCAMLOPT=x86_64-apple-darwin11-ocamlopt.opt" "OCAMLC=x86_64-apple-darwin11-ocamlopt.opt" && cp haxe $MAC/build/haxe && cp -rf std $MAC/build/) || exit 1
-cp extra/*.txt $MAC/build
+cp extra/{LICENSE,CONTRIB,CHANGES}.txt $MAC/tmp/haxe
 
 # haxelib
 cd extra/haxelib_src

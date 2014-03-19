@@ -37,7 +37,7 @@ rm -f haxe*
 i686-w64-mingw32-g++ -static extra/setup.cpp -o $WIN/tmp/resources/haxe/haxesetup.exe || exit 1
 
 # extra
-cp extra/*.txt $WIN/tmp/resources/haxe
+cp extra/{LICENSE,CONTRIB,CHANGES}.txt $WIN/tmp/resources/haxe
 cp extra/*.nsi $WIN/tmp
 cp extra/*.nsh $WIN/tmp
 cp -rf extra/images $WIN/tmp

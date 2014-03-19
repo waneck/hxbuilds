@@ -54,7 +54,7 @@ export MACOSX_DEPLOYMENT_TARGET=10.5
 (make clean && make "ADD_REVISION=$ADDREV" "OCAMLOPT=x86_64-apple-darwin11-ocamlopt.opt" "OCAMLC=x86_64-apple-darwin11-ocamlopt.opt" && cp haxe $MAC/tmp/haxe && cp -rf std $MAC/tmp/haxe/) || exit 1
 
 # extra
-cp extra/*.txt $MAC/tmp/haxe
+cp extra/{LICENSE,CONTRIB,CHANGES}.txt $MAC/tmp/haxe
 mkdir $MAC/tmp/haxe/lib-client
 chmod 777 $MAC/tmp/haxe/lib-client
 
