@@ -25,7 +25,10 @@ for proj in projects/*; do
 					./build.sh "$REV" "$VER" && touch "build/.r$REV" || PROJEXITVAR=1
 				fi
 				if [ -f "build/.r$REV" ]; then
-					tar -zcvf "out/${PROJECT}_r$REV.tar.gz" build/*
+					rm -rf "$PROJECT-$VER"
+					cp -Rf build "$PROJECT-$VER"
+					tar -zcvf "out/${PROJECT}_r$REV.tar.gz" "$PROJECT-$VER"
+					rm -rf "$PROJECT-$VER"
 				else
 					PROJEXITVAR=1
 				fi
