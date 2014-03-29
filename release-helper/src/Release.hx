@@ -142,6 +142,7 @@ class Release {
 				var data = unpack(s);
 				File.saveBytes(name + ".exe", data.first().data);
 		}
+		Sys.println('Finished $target');
 		handledTargets++;
 
 	}
