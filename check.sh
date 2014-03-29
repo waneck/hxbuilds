@@ -27,6 +27,7 @@ for proj in projects/*; do
 				if [ -f "build/.r$REV" ]; then
 					rm -rf "$PROJECT-$VER"
 					cp -Rf build "$PROJECT-$VER"
+					rm -f "$PROJECT-$VER/.r$REV"
 					tar -zcvf "out/${PROJECT}_r$REV.tar.gz" "$PROJECT-$VER"
 					rm -rf "$PROJECT-$VER"
 				else
