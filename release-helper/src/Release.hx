@@ -137,9 +137,15 @@ class Release {
 				zip.write(zipEntries);
 			case "mac-installer":
 				var data = unpack(s);
+				while(data.first().data.length == 0) {
+					data.pop();
+				}
 				File.saveBytes(name + ".pkg", data.first().data);
 			case "windows-installer":
 				var data = unpack(s);
+				while(data.first().data.length == 0) {
+					data.pop();
+				}
 				File.saveBytes(name + ".exe", data.first().data);
 		}
 		Sys.println('Finished $target');
