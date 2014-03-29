@@ -21,6 +21,7 @@ REV=$(git rev-parse HEAD)
 if [ ! $OLDREV = $REV ]; then
 	touch ../.updated
 fi
+echo "$VER - $OLDVER"
 if [ ! $VER = $OLDVER ]; then
   # ensure we're on master
   git checkout master
