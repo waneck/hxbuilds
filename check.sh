@@ -17,6 +17,9 @@ for proj in projects/*; do
 		for plat in installed-platforms/*; do
 			if [ -f repo/.updated ] && [ -d "${plat}" ]; then
 				echo "Building $PROJECT for $(basename $plat)"
+				if [ -f repo/.force ]; then
+					rm -rf "$BASE/$proj/$plat/build"
+				fi
 				cd "$BASE/$proj/$plat"
 			
 				if [ ! -f "build/.r$REV" ] && [ ! -f "out/${PROJECT}_r$REV.tar.gz" ]; then
@@ -51,6 +54,7 @@ for proj in projects/*; do
 			if [ -f repo/.updated ]; then
 				echo "removing updated"
 				rm repo/.updated
+				rm -f repo/.force
 			fi
 		else
 			EXITVAR=1
