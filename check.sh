@@ -26,8 +26,9 @@ for proj in projects/*; do
 					rm -rf build
 					mkdir build
 					./build.sh "$REV" "$VER" && touch "build/.r$REV" || PROJEXITVAR=1
+          echo $plat PROJEXITVAR $PROJEXITVAR
 				fi
-				if [ -f "build/.r$REV" ]; then
+				if [ -f "build/.r$REV" ] || [ -f "out/${PROJECT}_r$REV.tar.gz" ]; then
 					rm -rf "$PROJECT-$VER"
 					cp -Rf build "$PROJECT-$VER"
 					rm -f "$PROJECT-$VER/.r$REV"
@@ -35,6 +36,8 @@ for proj in projects/*; do
 					rm -rf "$PROJECT-$VER"
 				else
 					PROJEXITVAR=1
+          rm -rf "build"
+          echo v1 $plat PROJEXITVAR $PROJEXITVAR
 				fi
 
 				if [ -f "out/${PROJECT}_r$REV.tar.gz" ]; then
@@ -45,6 +48,7 @@ for proj in projects/*; do
 					neko $BASE/testrunner/bin/runner.n run-project $BASE/$proj $PROJECT "$REV"
 				else
 					PROJEXITVAR=1
+          echo v2 PROJEXITVAR $PROJEXITVAR
 				fi
 			fi
 			cd $BASE/$proj
