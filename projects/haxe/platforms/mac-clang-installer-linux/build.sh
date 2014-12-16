@@ -79,9 +79,9 @@ git fetch
 git pull
 haxelib dev dox .
 rm -rf bin/pages/*
-haxe gen.hxml || exit 1
-haxe std.hxml || exit 1
-cp -Rf bin/pages/* $MAC/tmp/haxe/doc || exit 1
+haxe gen.hxml
+haxe std.hxml
+cp -Rf bin/pages/* $MAC/tmp/haxe/doc
 
 # ready to execute!
 cd $MAC/tmp
