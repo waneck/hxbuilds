@@ -65,6 +65,9 @@ class Indexer
 '
 <html>
 <head>
+<title>Haxe git builds</title>
+</head>
+<body>
 <!-- Google Tag Manager -->
 <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-M4JZKD"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -73,11 +76,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
 	"//www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,"script","dataLayer","GTM-M4JZKD");</script>
-<title>Haxe git builds</title>
-
-</head>
 <!-- End Google Tag Manager -->
-<body>
 	<div id="listing">
 	<pre>
 ');
