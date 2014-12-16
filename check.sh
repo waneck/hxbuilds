@@ -46,6 +46,14 @@ for proj in projects/*; do
 					./sync.sh "$BASE/$proj/${plat}/out/${PROJECT}_r$REV.tar.gz" "$(basename $proj)/$(basename ${plat})/${PROJECT}_latest.tar.gz" || EXITVAR=1
 					echo "neko $BASE/testrunner/bin/runner.n run-project $BASE/$proj $PROJECT $REV"
 					neko $BASE/testrunner/bin/runner.n run-project $BASE/$proj $PROJECT "$REV"
+					echo "neko $BASE/indexer/indexer.n s3://hxbuilds/builds/$(basename $proj)/$(basename $plat)/"
+					rm -f index.html
+					neko $BASE/indexer/indexer.n s3://hxbuilds/builds/$(basename $proj)/$(basename $plat)/ || EXITVAR=1
+					if [ -f index.html ]; then
+						./sync.sh index.html "$(basename $proj)/$(basename ${plat})/index.html" || EXITVAR=1
+					else
+						EXITVAR=1
+					fi
 				else
 					PROJEXITVAR=1
           echo v2 PROJEXITVAR $PROJEXITVAR
