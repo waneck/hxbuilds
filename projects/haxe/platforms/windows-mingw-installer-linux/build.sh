@@ -61,8 +61,10 @@ git checkout -- .
 git fetch
 git pull
 haxelib dev dox .
+
 rm -rf bin/pages/*
 haxe gen.hxml
+haxe run.hxml
 haxe std.hxml
 cp -Rf bin/pages/* $WIN/tmp/resources/haxe/doc
 
