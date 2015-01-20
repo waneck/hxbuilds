@@ -31,4 +31,6 @@ rm haxelib.n
 mkdir -p $LNX/build/extra
 cp -Rf extra/haxelib_src $LNX/build/extra
 
+rm -rf /usr/lib/haxe/std
+cp -Rf ../../repo/haxe/std /usr/lib/haxe
 cp -Rf $LNX/build/* /usr/lib/haxe
