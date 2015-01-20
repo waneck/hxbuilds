@@ -4,18 +4,20 @@ if [ ! -e ../.updated ]; then
 	BRANCH=$(git rev-parse --abbrev-ref HEAD)
 	if [ $BRANCH == "development" ]; then
 		echo "checking master"
-		git checkout master
+		git checkout origin/master
+		git checkout -B master
 	else
 		echo "checking development"
-		git checkout development
+		git checkout origin/development
+		git checkout -B development
 	fi
 fi
 
 OLDVER=$(git rev-list --tags --max-count=1)
 OLDREV=$(git rev-parse HEAD)
-git submodule update
-git pull || exit 1
-git submodule update || exit 1
+git submodule update --force --recursive
+git pull origin `git name-rev --name-only HEAD` || exit 1
+git submodule update --force --recursive || exit 1
 VER=$(git rev-list --tags --max-count=1)
 REV=$(git rev-parse HEAD)
 if [ ! $OLDREV = $REV ]; then
