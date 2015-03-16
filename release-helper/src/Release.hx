@@ -11,7 +11,7 @@ class Config {
 
 	public function new() {
 		buildServerUrl = "http://hxbuilds.s3-website-us-east-1.amazonaws.com/builds/haxe/";
-		targets = ["linux32", "linux64", "mac-installer", "mac", "windows-installer", "windows", "raspbian"];
+		targets = ["linux32", "linux64", "mac-installer", "mac", "windows-installer", "windows"];
 		targetFileNameMap = [
 			"linux32" => "linux32",
 			"linux64" => "linux64",
