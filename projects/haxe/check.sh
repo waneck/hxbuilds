@@ -16,6 +16,7 @@ fi
 OLDVER=$(git rev-list --tags --max-count=1)
 OLDREV=$(git rev-parse HEAD)
 git submodule update --force --recursive
+git fetch
 git pull origin `git name-rev --name-only HEAD` || exit 1
 git submodule update --force --recursive || exit 1
 VER=$(git rev-list --tags --max-count=1)
