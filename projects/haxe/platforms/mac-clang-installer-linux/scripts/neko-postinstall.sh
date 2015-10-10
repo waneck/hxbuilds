@@ -1,12 +1,17 @@
 #!/bin/sh
-rm /usr/bin/neko
-rm /usr/bin/nekoc
-rm /usr/bin/nekoml
-rm /usr/bin/nekotools
-rm /usr/lib/libneko.dylib
+rm -f /usr/bin/neko
+rm -f /usr/bin/nekoc
+rm -f /usr/bin/nekoml
+rm -f /usr/bin/nekotools
+rm -f /usr/lib/libneko.dylib
+rm -f /usr/local/bin/neko
+rm -f /usr/local/bin/nekoc
+rm -f /usr/local/bin/nekoml
+rm -f /usr/local/bin/nekotools
+rm -f /usr/local/lib/libneko.dylib
 
-ln -s /usr/lib/neko/neko /usr/bin/neko
-ln -s /usr/lib/neko/nekoc /usr/bin/nekoc
-ln -s /usr/lib/neko/nekoml /usr/bin/nekoml
-ln -s /usr/lib/neko/nekotools /usr/bin/nekotools
-ln -s /usr/lib/neko/libneko.dylib /usr/lib/libneko.dylib
+ln -s /usr/local/lib/neko/neko /usr/local/bin/neko
+ln -s /usr/local/lib/neko/nekoc /usr/local/bin/nekoc
+ln -s /usr/local/lib/neko/nekoml /usr/local/bin/nekoml
+ln -s /usr/local/lib/neko/nekotools /usr/local/bin/nekotools
+ln -s /usr/local/lib/neko/libneko.dylib /usr/local/lib/libneko.dylib

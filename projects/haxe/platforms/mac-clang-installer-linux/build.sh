@@ -98,6 +98,7 @@ rm -rf haxe neko scripts
 
 cd ../installer
 xar -xf ../../installer-structure.pkg .
+cp ../../License ./Resources/en.lproj/License
 
 # edit haxe
 cd files.pkg
