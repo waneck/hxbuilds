@@ -6,6 +6,7 @@ chmod +x *
 rm -f /usr/lib/haxe
 rm -f /usr/local/lib/haxe
 mkdir -p /usr/local/lib/haxe
+mkdir -p /usr/local/bin
 cp -Rf ../haxe/* /usr/local/lib/haxe
 ./haxe-postinstall.sh
 ./neko-preinstall.sh
