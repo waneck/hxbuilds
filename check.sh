@@ -4,6 +4,8 @@ EXITVAR=0
 export S3_LOG_PATH=s3://hxbuilds/builds/log
 export LOG_PATH=$PWD/log
 
+mkdir -p "$LOG_PATH"
+
 BASE=$PWD
 for proj in projects/*; do
 	cd $BASE
