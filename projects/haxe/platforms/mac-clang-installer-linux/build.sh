@@ -51,9 +51,10 @@ echo "Installer for $VER ($CLEANVER)"
 
 rm -f haxe*
 export MACOSX_DEPLOYMENT_TARGET=10.5
-(make clean && make "ADD_REVISION=$ADDREV" "OCAMLOPT=x86_64-apple-darwin11-ocamlopt.opt" "OCAMLC=x86_64-apple-darwin11-ocamlopt.opt" && cp haxe $MAC/tmp/haxe && cp -rf std $MAC/tmp/haxe/) || exit 1
+(make clean && make "ADD_REVISION=$ADDREV" "OCAMLOPT=x86_64-apple-darwin11-ocamlopt.opt" "OCAMLC=x86_64-apple-darwin11-ocamlopt.opt" libs haxe && cp haxe $MAC/tmp/haxe && cp -rf std $MAC/tmp/haxe/) || exit 1
 
 # extra
+mkdir -p $MAC/tmp/haxe
 cp extra/{LICENSE,CONTRIB,CHANGES}.txt $MAC/tmp/haxe
 mkdir $MAC/tmp/haxe/lib-client
 chmod 777 $MAC/tmp/haxe/lib-client
@@ -64,25 +65,30 @@ mv $MAC/tmp/neko* $MAC/tmp/neko
 
 # haxelib
 cd extra/haxelib_src
-haxe haxelib.hxml
-cp bin/haxelib.n $MAC/tmp/haxe
+haxe client.hxml
+cp run.n $MAC/tmp/haxe
 cd $MAC/tmp/haxe
-neko $MAC/../../platforms/common/boot.n -b ../neko/neko haxelib.n
-rm haxelib.n
+neko $MAC/../../platforms/common/boot.n -b ../neko/neko run.n
+mv run haxelib
+rm run.n
 mkdir -p $MAC/tmp/haxe/lib
 chmod 777 $MAC/tmp/haxe/lib
 
 # docs
+haxelib install hxargs
+haxelib install markdown
+haxelib install hxtemplo
 cd $MAC/repo/dox
 git checkout -- .
 git fetch
 git pull
 haxelib dev dox .
 rm -rf bin/pages/*
-haxe gen.hxml
-haxe run.hxml
-haxe std.hxml
-cp -Rf bin/pages/* $MAC/tmp/haxe/doc
+# disabled until it's fixed
+# haxe gen.hxml || echo "command failed"
+# haxe run.hxml || echo "command failed"
+# haxe std.hxml || echo "command failed"
+# cp -Rf bin/pages/* $MAC/tmp/haxe/doc
 
 # ready to execute!
 cd $MAC/tmp
