@@ -33,10 +33,11 @@ CLEANVER=${2//[^0-9\.]/}
 echo "Installer for $VER ($CLEANVER)"
 
 rm -f haxe*
-(make clean && make "ADD_REVISION=$ADDREV" "OCAMLOPT=i686-w64-mingw32-ocamlopt" "OCAMLC=i686-w64-mingw32-ocamlc" && cp haxe $WIN/tmp/resources/haxe/haxe.exe && cp -rf std $WIN/tmp/resources/haxe/) || exit 1
+(make clean && make "ADD_REVISION=$ADDREV" "OCAMLOPT=i686-w64-mingw32-ocamlopt" "OCAMLC=i686-w64-mingw32-ocamlc" libs haxe && cp haxe $WIN/tmp/resources/haxe/haxe.exe && cp -rf std $WIN/tmp/resources/haxe/) || exit 1
 i686-w64-mingw32-g++ -static extra/setup.cpp -o $WIN/tmp/resources/haxe/haxesetup.exe || exit 1
 
 # extra
+mkdir -p $WIN/tmp/resources/haxe
 cp extra/{LICENSE,CONTRIB,CHANGES}.txt $WIN/tmp/resources/haxe
 cp extra/*.nsi $WIN/tmp
 cp extra/*.nsh $WIN/tmp
@@ -47,13 +48,16 @@ tar -zxvf $WIN/neko-stable.tar.gz -C $WIN/tmp/resources
 mv $WIN/tmp/resources/neko* $WIN/tmp/resources/neko
 
 # haxelib
+haxelib install hxargs
+haxelib install markdown
+haxelib install hxtemplo
 cd extra/haxelib_src
-haxe haxelib.hxml
-mv bin/haxelib.n $WIN/tmp/resources/haxe
+haxe client.hxml
+mv run.n $WIN/tmp/resources/haxe
 cd $WIN/tmp/resources/haxe
-neko $WIN/../../platforms/common/boot.n -b ../neko/neko.exe haxelib.n
-mv haxelib haxelib.exe
-rm haxelib.n
+neko $WIN/../../platforms/common/boot.n -b ../neko/neko.exe run.n
+mv run haxelib.exe
+rm run.n
 
 # docs
 cd $WIN/repo/dox
@@ -63,10 +67,11 @@ git pull
 haxelib dev dox .
 
 rm -rf bin/pages/*
-haxe gen.hxml
-haxe run.hxml
-haxe std.hxml
-cp -Rf bin/pages/* $WIN/tmp/resources/haxe/doc
+# disabled until it's fixed
+# haxe gen.hxml || echo "coomand failed"
+# haxe run.hxml || echo "coomand failed"
+# haxe std.hxml || echo "coomand failed"
+# cp -Rf bin/pages/* $WIN/tmp/resources/haxe/doc || echo "command failed"
 
 # ready to execute!
 cd $WIN/tmp
