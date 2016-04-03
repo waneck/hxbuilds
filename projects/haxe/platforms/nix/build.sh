@@ -24,8 +24,8 @@ cp extra/{LICENSE,CONTRIB,CHANGES}.txt $LNX/tmp/haxe
 
 # haxelib
 cd extra/haxelib_src
-haxe haxelib.hxml
-mv bin/haxelib.n $LNX/build
+haxe client.hxml
+mv run.n $LNX/build/haxelib.n
 cd $LNX/build
 nekotools boot haxelib.n
 rm haxelib.n
