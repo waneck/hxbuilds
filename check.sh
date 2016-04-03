@@ -1,18 +1,21 @@
 #!/bin/sh
+echo "[$(date)] checking for updates..."
 EXITVAR=0
+export S3_LOG_PATH=s3://hxbuilds/builds/log
+export LOG_PATH=$PWD/log
 
 BASE=$PWD
 for proj in projects/*; do
 	cd $BASE
 	echo $proj
 	if [ -d "${proj}" ]; then
-		echo "Checking $(basename $proj)"
+		PROJECT=$(basename $proj)
+		echo "Checking project $PROJECT"
 		cd "${proj}"
-		./check.sh || EXITVAR=1
+		neko "$BASE/tools/logger.n" "$PROJECT-check" ./check.sh || PROJEXITVAR=1
 
 		REV=$(./getrev.sh)
 		VER=$(./getver.sh)
-		PROJECT=$(basename $proj)
 		PROJEXITVAR=0
 		for plat in installed-platforms/*; do
 			if [ -f repo/.updated ] && [ -d "${plat}" ]; then
@@ -25,8 +28,8 @@ for proj in projects/*; do
 				if [ ! -f "build/.r$REV" ] && [ ! -f "out/${PROJECT}_r$REV.tar.gz" ]; then
 					rm -rf build
 					mkdir build
-					./build.sh "$REV" "$VER" && touch "build/.r$REV" || PROJEXITVAR=1
-          echo $plat PROJEXITVAR $PROJEXITVAR
+					neko "$BASE/tools/logger.n" "$PROJECT-$(basename $plat)-build" ./build.sh "$REV" "$VER" && touch "build/.r$REV" || PROJEXITVAR=1
+					echo $plat PROJEXITVAR $PROJEXITVAR
 				fi
 				if [ -f "build/.r$REV" ] || [ -f "out/${PROJECT}_r$REV.tar.gz" ]; then
 					rm -rf "$PROJECT-$VER"
@@ -36,8 +39,8 @@ for proj in projects/*; do
 					rm -rf "$PROJECT-$VER"
 				else
 					PROJEXITVAR=1
-          rm -rf "build"
-          echo v1 $plat PROJEXITVAR $PROJEXITVAR
+					rm -rf "build"
+					echo v1 $plat PROJEXITVAR $PROJEXITVAR
 				fi
 
 				if [ -f "out/${PROJECT}_r$REV.tar.gz" ]; then
@@ -46,9 +49,9 @@ for proj in projects/*; do
 					./sync.sh "$BASE/$proj/${plat}/out/${PROJECT}_r$REV.tar.gz" "$(basename $proj)/$(basename ${plat})/${PROJECT}_latest.tar.gz" || EXITVAR=1
 					echo "neko $BASE/testrunner/bin/runner.n run-project $BASE/$proj $PROJECT $REV"
 					neko $BASE/testrunner/bin/runner.n run-project $BASE/$proj $PROJECT "$REV"
-					echo "neko $BASE/indexer/indexer.n s3://hxbuilds/builds/$(basename $proj)/$(basename $plat)/"
+					echo "neko $BASE/tools/indexer.n s3://hxbuilds/builds/$(basename $proj)/$(basename $plat)/"
 					rm -f index.html
-					neko $BASE/indexer/indexer.n s3://hxbuilds/builds/$(basename $proj)/$(basename $plat)/ || EXITVAR=1
+					neko $BASE/tools/indexer.n s3://hxbuilds/builds/$(basename $proj)/$(basename $plat)/ || EXITVAR=1
 					if [ -f index.html ]; then
 						./sync.sh index.html "$(basename $proj)/$(basename ${plat})/index.html" || EXITVAR=1
 					else
@@ -74,4 +77,14 @@ for proj in projects/*; do
 	fi
 done
 
+cd $LOG_PATH
+rm -f index.html
+neko $BASE/tools/indexer.n "$S3_LOG_PATH/" || EXITVAR=1
+if [ -f index.html ]; then
+	"$BASE/sync.sh" index.html "log/index.html" || EXITVAR=1
+else
+	EXITVAR=1
+fi
+
+echo "[$(date)] ended"
 exit $EXITVAR

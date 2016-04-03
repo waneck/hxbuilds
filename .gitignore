@@ -1,6 +1,7 @@
 bin
 bin*
 tags
+log
 
 out
 build

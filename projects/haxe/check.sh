@@ -11,6 +11,8 @@ if [ ! -e ../.updated ]; then
 		git checkout development
 		TARGET_BRANCH="development"
 	fi
+else
+	TARGET_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 fi
 
 OLDVER=$(git rev-list --tags --max-count=1)

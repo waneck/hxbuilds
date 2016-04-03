@@ -11,13 +11,15 @@ mkdir -p out
 mkdir -p build
 
 cd ../../repo/haxe
+HAXEREPO=$PWD
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 ADDREV=1
 if [ $BRANCH == "master" ]; then
   ADDREV=0
 fi
-rm haxe*
+rm -f haxe*
 (make clean && make all "ADD_REVISION=$ADDREV" && make tools && cp haxe* $LNX/build/ && cp -rf std $LNX/build/) || exit 1
+mkdir -p $LNX/tmp/haxe
 cp extra/{LICENSE,CONTRIB,CHANGES}.txt $LNX/tmp/haxe
 
 # haxelib
@@ -29,7 +31,7 @@ nekotools boot haxelib.n
 rm haxelib.n
 
 mkdir -p $LNX/build/extra
-cp -Rf extra/haxelib_src $LNX/build/extra
+cp -Rf "$HAXEREPO/extra/haxelib_src" $LNX/build/extra
 
 rm -rf /usr/lib/haxe/std
 cp -Rf ../../repo/haxe/std /usr/lib/haxe
