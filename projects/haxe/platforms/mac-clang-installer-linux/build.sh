@@ -9,7 +9,7 @@ fi
 REV=$1
 VER=$2
 VERLONG=$2
-NEKOVER=2.0.0
+NEKOVER=2.1.0
 
 rm -rf tmp
 mkdir -p out
