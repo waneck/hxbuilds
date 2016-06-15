@@ -31,7 +31,7 @@ class Logger
 		// bash-ception: we need to redirect both stderr and stdout to the same stream; but we need to do it on the main bash process
 		var proc = new Process('/bin/bash',['-c', '/bin/bash -xve -c "export SHELLOPTS; $allArgs" 2>&1']);
 		var lock = new Lock();
-		var uploader = spawnUploader(s3path, logpath, name, 1, lock);
+		var uploader = spawnUploader(s3path, logpath, name, 10, lock);
 		spawnTimeout(timeout, uploader); // please process do not hang
 
 		var writer = File.write('$logpath/$name.txt');
