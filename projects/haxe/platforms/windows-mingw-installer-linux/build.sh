@@ -33,7 +33,7 @@ CLEANVER=${2//[^0-9\.]/}
 echo "Installer for $VER ($CLEANVER)"
 
 rm -f haxe*
-(make clean && make "ADD_REVISION=$ADDREV" "OCAMLOPT=i686-w64-mingw32-ocamlopt" "OCAMLC=i686-w64-mingw32-ocamlc" libs haxe && cp haxe $WIN/tmp/resources/haxe/haxe.exe && cp -rf std $WIN/tmp/resources/haxe/) || exit 1
+(make clean && make "STATICLINK=1" "ADD_REVISION=$ADDREV" "OCAMLOPT=i686-w64-mingw32-ocamlopt" "OCAMLC=i686-w64-mingw32-ocamlc" libs haxe && cp haxe $WIN/tmp/resources/haxe/haxe.exe && cp -rf std $WIN/tmp/resources/haxe/) || exit 1
 i686-w64-mingw32-g++ -static extra/setup.cpp -o $WIN/tmp/resources/haxe/haxesetup.exe || exit 1
 
 # extra

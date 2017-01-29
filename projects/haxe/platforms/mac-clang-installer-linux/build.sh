@@ -51,7 +51,7 @@ echo "Installer for $VER ($CLEANVER)"
 
 rm -f haxe*
 export MACOSX_DEPLOYMENT_TARGET=10.5
-(make clean && make "ADD_REVISION=$ADDREV" "OCAMLOPT=x86_64-apple-darwin11-ocamlopt.opt" "OCAMLC=x86_64-apple-darwin11-ocamlopt.opt" libs haxe && cp haxe $MAC/tmp/haxe && cp -rf std $MAC/tmp/haxe/) || exit 1
+(make clean && make "STATICLINK=1" "ADD_REVISION=$ADDREV" "OCAMLOPT=x86_64-apple-darwin11-ocamlopt.opt" "OCAMLC=x86_64-apple-darwin11-ocamlopt.opt" libs haxe && cp haxe $MAC/tmp/haxe && cp -rf std $MAC/tmp/haxe/) || exit 1
 
 # extra
 mkdir -p $MAC/tmp/haxe

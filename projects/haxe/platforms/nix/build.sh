@@ -18,7 +18,7 @@ if [ $BRANCH == "master" ]; then
   ADDREV=0
 fi
 rm -f haxe*
-(make clean && make all "ADD_REVISION=$ADDREV" && make tools && cp haxe* $LNX/build/ && cp -rf std $LNX/build/) || exit 1
+(make clean && make all "STATICLINK=1" "ADD_REVISION=$ADDREV" && make tools && cp haxe* $LNX/build/ && cp -rf std $LNX/build/) || exit 1
 mkdir -p $LNX/tmp/haxe
 cp extra/{LICENSE,CONTRIB,CHANGES}.txt $LNX/tmp/haxe
 

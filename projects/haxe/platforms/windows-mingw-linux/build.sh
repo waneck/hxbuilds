@@ -9,7 +9,7 @@ if [ $BRANCH == "master" ]; then
   ADDREV=0
 fi
 rm -f haxe*
-(make clean && make "ADD_REVISION=$ADDREV" "OCAMLOPT=i686-w64-mingw32-ocamlopt" "OCAMLC=i686-w64-mingw32-ocamlc" libs haxe && cp haxe $WIN/build/haxe.exe && cp -rf std $WIN/build/) || exit 1
+(make clean && make "STATICLINK=1" "ADD_REVISION=$ADDREV" "OCAMLOPT=i686-w64-mingw32-ocamlopt" "OCAMLC=i686-w64-mingw32-ocamlc" libs haxe && cp haxe $WIN/build/haxe.exe && cp -rf std $WIN/build/) || exit 1
 mkdir -p $WIN/build
 cp extra/{LICENSE,CONTRIB,CHANGES}.txt $WIN/build
 
