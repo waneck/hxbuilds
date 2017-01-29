@@ -51,7 +51,12 @@ echo "Installer for $VER ($CLEANVER)"
 
 rm -f haxe*
 export MACOSX_DEPLOYMENT_TARGET=10.5
-(make clean && make "STATICLINK=1" "ADD_REVISION=$ADDREV" "OCAMLOPT=x86_64-apple-darwin11-ocamlopt.opt" "OCAMLC=x86_64-apple-darwin11-ocamlopt.opt" libs haxe && cp haxe $MAC/tmp/haxe && cp -rf std $MAC/tmp/haxe/) || exit 1
+if [ -z "$APPLE_ROOT" ]; then
+  APPLE_ROOT=/usr/x86_64-apple-darwin11
+fi
+
+LIB_PARAMS=-cclib '$APPLE_ROOT/usr/lib/libpcre.a' -cclib -lz
+(make clean && make "LIB_PARAMS=$LIB_PARAMS" "ADD_REVISION=$ADDREV" "OCAMLOPT=x86_64-apple-darwin11-ocamlopt.opt" "OCAMLC=x86_64-apple-darwin11-ocamlopt.opt" libs haxe && cp haxe $MAC/tmp/haxe && cp -rf std $MAC/tmp/haxe/) || exit 1
 
 # extra
 mkdir -p $MAC/tmp/haxe
