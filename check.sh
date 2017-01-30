@@ -14,7 +14,7 @@ for proj in projects/*; do
 		PROJECT=$(basename $proj)
 		echo "Checking project $PROJECT"
 		cd "${proj}"
-		neko "$BASE/tools/logger.n" "$PROJECT-check" ./check.sh || PROJEXITVAR=1
+		./check.sh || PROJEXITVAR=1
 
 		REV=$(./getrev.sh)
 		VER=$(./getver.sh)
